@@ -95,3 +95,58 @@ h3 {font-size:clamp(1.45rem,2.6vw,1.9rem); margin:.45rem 0 .65rem}
  .prose th,.prose td {padding:.5rem}
  .prose h2 {margin-top:2.3rem}
 }
+
+/* Professional contact page */
+.hero-actions,.footer-links {display:flex; flex-wrap:wrap; align-items:center; gap:.65rem 1.5rem}
+.secondary-link {color:var(--muted)}
+.site-header nav a[aria-current="page"] {color:var(--accent); text-decoration:underline}
+.contact-page {max-width:940px; margin:auto; padding:clamp(3rem,8vw,6rem) 0}
+.contact-intro {padding-bottom:2rem}
+.contact-grid {display:grid;grid-template-columns:minmax(0,1.65fr) minmax(0,1fr); gap:clamp(2rem,5vw,4rem);border-top:1px solid var(--line);padding-top:2rem}
+.contact-channel {border-bottom:1px solid var(--line);padding:0 0 1.6rem;margin:0 0 1.6rem}
+.contact-channel h2 {font-size:1.8rem;margin:.4rem 0 .65rem}
+.contact-channel p:not(.eyebrow),.contact-aside p:not(.eyebrow),.contact-aside li {font-size:.94rem;color:var(--muted)}
+.contact-link {display:flex; align-items:center;justify-content:space-between;gap:.75rem; color:var(--accent);font-weight:600;overflow-wrap:anywhere;text-decoration:none;padding:.35rem 0}
+.contact-link:hover {text-decoration:underline}
+.contact-link span {flex-shrink:0}
+.contact-aside {align-self:start;border-left:1px solid var(--line);padding-left:1.5rem}
+.contact-aside h2 {font-size:1.6rem}
+.contact-aside ul {padding-left:1.1rem;margin:0 0 1.5rem}
+.contact-aside li {padding:.28rem 0}
+@media(max-width:640px){
+ .site-header {flex-direction:column;gap:.85rem}
+ .site-header nav {justify-content:flex-start;gap:.4rem 1rem}
+ .contact-grid {grid-template-columns:1fr;gap:1.5rem}
+ .contact-aside {border-left:0;padding-left:0}
+ .site-footer {align-items:flex-start;flex-wrap:wrap}
+ .footer-links {gap:.6rem 1rem}
+}
+
+/* Subtle, non-blocking motion: no scroll listeners or animation dependency. */
+@media(prefers-reduced-motion:no-preference) {
+ @keyframes arrival {from{opacity:.65;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+ @keyframes rule-draw {from{transform:scaleX(.15)}to{transform:scaleX(1)}}
+ .hero > :not(.hero-rule),.contact-intro > :not(.hero-rule),.case-study > .case-kicker,.case-study > h1,.case-study > .lede {animation:arrival 500ms cubic-bezier(.2,.65,.3,1) both}
+ .hero h1,.contact-intro h1,.case-study h1 {animation-delay:65ms}
+ .hero-copy,.contact-intro .lede,.case-study .lede {animation-delay:120ms}
+ .hero-actions {animation-delay:180ms}
+ .hero-rule {transform-origin:left center;animation:rule-draw 650ms cubic-bezier(.2,.65,.3,1) both}
+ .project-card {animation:arrival 550ms cubic-bezier(.2,.65,.3,1) both}
+ .project-card:nth-child(2) {animation-delay:70ms}
+ .project-card:nth-child(3) {animation-delay:140ms}
+ .project-link .figure-wrap {transition:border-color 200ms ease}
+ .project-link .project-figure {transition:transform 400ms cubic-bezier(.2,.65,.3,1)}
+ .card-meta > span:last-child,.contact-link span {transition:transform 200ms ease}
+ .site-header nav a,.text-link {transition:color 180ms ease}
+ .project-link:focus-visible .figure-wrap {border-color:var(--accent)}
+ .project-link:focus-visible .project-figure {transform:scale(1.025)}
+ @media(hover:hover) {
+  .project-link:hover .figure-wrap {border-color:var(--accent)}
+  .project-link:hover .project-figure {transform:scale(1.025)}
+  .project-link:hover .card-meta > span:last-child,.contact-link:hover span {transform:translate(2px,-2px)}
+ }
+}
+@media(prefers-reduced-motion:reduce) {
+ html {scroll-behavior:auto}
+ *,*::before,*::after {animation:none!important;transition:none!important}
+}

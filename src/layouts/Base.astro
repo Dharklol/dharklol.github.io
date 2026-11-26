@@ -1,11 +1,12 @@
 ---
 import 'katex/dist/katex.min.css';
 import '../styles/global.css';
+import { contact } from '../data/contact';
 interface Props { title?: string; description?: string; }
 const { title, description = 'Selected engineering, computational modeling and quantitative research projects.' } = Astro.props;
 const pageTitle = title ? title + ' — Jesse Steel' : 'Jesse Steel — Engineering & Research';
 const path = Astro.url.pathname;
-const nav = [{href:'/#work',label:'Work'},{href:'/about/',label:'About'}];
+const nav = [{href:'/#work',label:'Work'},{href:'/about/',label:'About'},{href:'/contact/',label:'Contact'}];
 ---
 <!doctype html>
 <html lang="en">
@@ -25,11 +26,12 @@ const nav = [{href:'/#work',label:'Work'},{href:'/about/',label:'About'}];
 <a class="wordmark" href="/">JESSE STEEL<span>.</span></a>
 <nav aria-label="Primary">
 {nav.map(item => <a href={item.href} aria-current={path === item.href ? 'page' : undefined}>{item.label}</a>)}
-<a href="https://github.com/Dharklol">GitHub <span aria-hidden="true">↗</span></a>
+<a href={contact.github}>GitHub <span aria-hidden="true">↗</span></a>
+<a href={contact.linkedin}>LinkedIn <span aria-hidden="true">↗</span></a>
 </nav>
 </header>
 <main id="main"><slot /></main>
-<footer class="site-footer"><span>© {new Date().getFullYear()} Jesse Steel</span><a href="https://github.com/Dharklol">GitHub ↗</a></footer>
+<footer class="site-footer"><span>© {new Date().getFullYear()} Jesse Steel</span><div class="footer-links"><a href="/contact/">Contact</a><a href={contact.github}>GitHub <span aria-hidden="true">↗</span></a><a href={contact.linkedin}>LinkedIn <span aria-hidden="true">↗</span></a></div></footer>
 </div>
 </body>
 </html>
