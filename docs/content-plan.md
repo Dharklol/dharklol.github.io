@@ -16,3 +16,6 @@ Do not publish private raw data, secrets or unnecessary host/access details. Sha
 
 ## Later
 Add technical notes only when there is substantive content. Add a Markdown notes collection, KaTeX and figure tooling when a first article needs them. No empty research or résumé routes at launch.
+
+## Content expansion / review gate
+The FSAE article and standalone steering FDR digest use the October 2026 WUFR-27 review and pinned public steering analysis documentation. The original team document is not copied into this public repository; use a reviewed static PDF, not a live Drive permission change. Place the approved file under public/documents/ and set the path in src/data/documents.ts. Verify figure rights, remove working comments and unrelated team information. The digest remains explicitly separate from the original. Wydown's updated article distinguishes recorder/research work from review-draft portfolio architecture. Before adding recorder benchmark metrics, confirm original reports and measurement definitions. ARB test results and individual contribution descriptions remain to be confirmed.

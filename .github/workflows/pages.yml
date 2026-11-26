@@ -24,6 +24,7 @@ jobs:
           test -f dist/projects/fsae/index.html
           test -f dist/projects/vehicle-dynamics/index.html
           test -f dist/projects/wydown/index.html
+          test -f dist/documents/steering-fdr/index.html
       - run: npx playwright install --with-deps chromium
       - run: npm run test:site
       - uses: actions/upload-artifact@v4

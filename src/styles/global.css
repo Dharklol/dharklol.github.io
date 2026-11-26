@@ -150,3 +150,10 @@ h3 {font-size:clamp(1.45rem,2.6vw,1.9rem); margin:.45rem 0 .65rem}
  html {scroll-behavior:auto}
  *,*::before,*::after {animation:none!important;transition:none!important}
 }
+
+/* Standalone design-document reader */
+.document-note {border-top:1px solid var(--line);margin-top:2.5rem;padding-top:1.4rem;color:var(--muted);font-size:.9rem}
+.document-reader .prose section {scroll-margin-top:1rem}
+.pdf-viewer {margin:2rem 0}
+.pdf-viewer object {display:block;width:100%;height:min(78vh,900px);min-height:420px;border:1px solid var(--line);margin-top:1rem;background:var(--figure)}
+@media print {.site-header,.site-footer,.skip,.document-reader > .text-link,.article-contents{display:none}.document-reader{max-width:none;padding:0}.shell{max-width:none;padding:0}.document-reader .prose{max-width:none}.document-reader h2{break-after:avoid}.document-note{break-inside:avoid}}

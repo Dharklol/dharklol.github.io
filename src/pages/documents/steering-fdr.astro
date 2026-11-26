@@ -1,0 +1,18 @@
+---
+import Base from '../../layouts/Base.astro';
+import { fdrSections } from '../../data/steering-fdr';
+import { steeringFdrPdf } from '../../data/documents';
+---
+<Base title="Steering Final Design Review" description="Portfolio-facing technical digest of the WUFR-27 steering final design review.">
+<article class="case-study document-reader">
+<a class="text-link" href="/projects/fsae/">← Formula SAE Engineering</a>
+<p class="eyebrow case-kicker">DESIGN DOCUMENTATION / WUFR-27</p>
+<h1>Steering Final Design Review</h1>
+<p class="lede">A portfolio-facing digest of the October 2026 team design review, organized around design intent, mechanical analysis and validation.</p>
+<div class="case-meta"><span>Team engineering · Steering subsystem lead</span><span>Technical digest · Not original FDR</span></div>
+{steeringFdrPdf && <section class="pdf-viewer"><h2>Full design review</h2><div class="hero-actions"><a class="text-link" href={steeringFdrPdf}>Open PDF ↗</a><a class="text-link" href={steeringFdrPdf} download>Download PDF ↓</a></div><object data={steeringFdrPdf} type="application/pdf" aria-label="Steering final design review PDF"><p>Inline PDF viewing is not available. <a href={steeringFdrPdf}>Open the PDF</a>.</p></object></section>}
+<nav class="article-contents" aria-label="Document sections"><p class="eyebrow">DOCUMENT CONTENTS</p><ol>{fdrSections.map(section=><li><a href={'#'+section.id}>{section.title}</a></li>)}</ol></nav>
+<div class="prose">{fdrSections.map(section=><section id={section.id}><h2>{section.title}</h2>{section.paragraphs.map(p=><p>{p}</p>)}</section>)}</div>
+<section class="document-note"><p class="eyebrow">DOCUMENT STATUS</p><p>This is an independently authored portfolio summary, not a reproduction of the original team document or a released manufacturing specification. The full PDF is not currently available here.</p><a class="text-link" href="/projects/fsae/">Return to the engineering case study ↗</a></section>
+</article>
+</Base>
