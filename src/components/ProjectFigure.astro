@@ -1,0 +1,29 @@
+---
+interface Props { kind: 'fsae' | 'dynamics' | 'wydown'; }
+const {kind} = Astro.props;
+---
+<svg class="project-figure" viewBox="0 0 480 260" aria-hidden="true" focusable="false">
+<rect width="480" height="260" class="figure-bg"/>
+{Array.from({length:11},(_,i)=><line x1={40+i*40} x2={40+i*40} y1="20" y2="240" class="gridline"/>)}
+{Array.from({length:6},(_,i)=><line x1="20" x2="460" y1={30+i*40} y2={30+i*40} class="gridline"/>)}
+{kind === 'fsae' && <g class="diagram">
+<path d="M240 29 L190 75 L174 185 L240 231 L306 185 L290 75 Z M190 75 L290 75 M174 185 L306 185 M190 75 L306 185 M290 75 L174 185 M240 29 V231" />
+<rect x="84" y="44" width="48" height="86" rx="8" transform="rotate(-12 108 87)"/>
+<rect x="348" y="44" width="48" height="86" rx="8" transform="rotate(12 372 87)"/>
+<rect x="91" y="161" width="45" height="76" rx="7"/><rect x="344" y="161" width="45" height="76" rx="7"/>
+<path d="M108 87 L190 75 L124 102 L190 106 M372 87 L290 75 L356 102 L290 106 M136 194 L174 185 M344 194 L306 185 M143 105 H337" />
+<circle cx="190" cy="75" r="4"/><circle cx="290" cy="75" r="4"/>
+</g>}
+{kind === 'dynamics' && <g class="diagram">
+<path d="M77 192 H405 M112 66 L280 92 L365 52 M112 177 L280 155 L365 207 M280 92 L280 155 L365 52 L365 207 L280 92 M112 66 V177"/>
+<path d="M280 92 L232 40 L202 159 M232 40 L275 40 M202 159 L167 192" class="accent-stroke"/>
+<rect x="350" y="35" width="35" height="188" rx="5" transform="rotate(7 367 129)"/>
+{[[112,66],[112,177],[280,92],[280,155],[365,52],[365,207],[232,40],[202,159]].map(([x,y])=><circle cx={x} cy={y} r="5"/>)}
+</g>}
+{kind === 'wydown' && <g class="diagram">
+<path d="M42 187 H219 M42 65 V187 M260 65 V187 M260 187 H435" />
+{[0,1,2,3,4,5,6,7,8,9].map(i=><g><rect x={124-(18+(i*17)%66)} y={70+i*10} width={18+(i*17)%66} height="6" class="bar-muted"/><rect x="130" y={70+i*10} width={16+(i*23)%66} height="6" class="bar-accent"/></g>)}
+<path d="M266 147 L285 138 L304 152 L323 109 L342 121 L361 98 L380 118 L399 78 L429 93" class="accent-stroke"/>
+<path d="M266 161 L285 157 L304 149 L323 145 L342 136 L361 139 L380 127 L399 120 L429 113" stroke-dasharray="5 6"/>
+</g>}
+</svg>
