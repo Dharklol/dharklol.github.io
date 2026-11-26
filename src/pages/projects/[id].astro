@@ -1,0 +1,23 @@
+---
+import Base from '../../layouts/Base.astro';
+import ProjectFigure from '../../components/ProjectFigure.astro';
+import { getCollection, render } from 'astro:content';
+export async function getStaticPaths() {
+  const projects = await getCollection('projects');
+  return projects.map(project=>({params:{id:project.id},props:{project}}));
+}
+const {project} = Astro.props;
+const {Content} = await render(project);
+const {title,summary,discipline,status,tags,kind,order} = project.data;
+---
+<Base title={title} description={summary}>
+<article class="case-study">
+<a class="text-link" href="/#work">← Selected work</a>
+<p class="eyebrow case-kicker">{String(order).padStart(2,'0')} / {discipline}</p>
+<h1>{title}</h1>
+<p class="lede">{summary}</p>
+<div class="case-meta"><span>{status}</span><span>{tags.join(' / ')}</span></div>
+<div class="figure-wrap case-figure"><ProjectFigure kind={kind}/><span class="figure-label">SCHEMATIC / ILLUSTRATIVE</span></div>
+<div class="prose"><Content/></div>
+</article>
+</Base>
