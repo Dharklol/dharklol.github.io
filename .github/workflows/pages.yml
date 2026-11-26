@@ -20,6 +20,7 @@ jobs:
         run: |
           test -f dist/index.html
           test -f dist/about/index.html
+          test -f dist/contact/index.html
           test -f dist/projects/fsae/index.html
           test -f dist/projects/vehicle-dynamics/index.html
           test -f dist/projects/wydown/index.html

@@ -15,22 +15,34 @@ try {
   await mkdir('screenshots',{recursive:true});
   for(const width of [390,1280]) {
     const page=await browser.newPage({viewport:{width,height:900}});
-    for(const route of ['/','/about/','/projects/fsae/','/projects/vehicle-dynamics/','/projects/wydown/']) {
+    for(const route of ['/','/about/','/contact/','/projects/fsae/','/projects/vehicle-dynamics/','/projects/wydown/']) {
       const res=await page.goto(base+route);
       assert(res?.ok(), route+' not available');
       await page.evaluate(()=>document.fonts.ready);
       assert.equal(await page.locator('h1').count(),1,route+' heading');
       assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),route+' horizontal overflow at '+width);
       assert(await page.locator('img').evaluateAll(images=>images.every(im=>im.complete&&im.naturalWidth>0)),route+' broken image');
+      assert.equal(await page.locator('header nav a[href="https://www.linkedin.com/in/jesse-koeppel/"]').count(),1);
+      assert.equal(await page.locator('header nav a[href="/contact/"]').count(),1);
+      if(route==='/contact/') {
+        assert.equal(await page.locator('main a[href="mailto:jessemsteel@gmail.com"]').count(),1);
+        assert.equal(await page.locator('main a[href="https://github.com/Dharklol"]').count(),1);
+        assert.equal(await page.locator('main a[href="https://www.linkedin.com/in/jesse-koeppel/"]').count(),1);
+      }
       if(route==='/projects/vehicle-dynamics/') {
         assert(await page.locator('.katex-display').count()>=3,'display math missing');
         assert.equal(await page.locator('.katex-error').count(),0);
         assert(await page.locator('.article-contents a').evaluateAll(links=>links.every(a=>document.getElementById(decodeURIComponent(a.hash.slice(1))))),'broken contents link');
       }
-      if(route==='/'||route==='/projects/vehicle-dynamics/') await page.screenshot({path:'screenshots/'+(route==='/'?'home':'vehicle-dynamics')+'-'+width+'.png',fullPage:true});
+      if(route==='/'||route==='/projects/vehicle-dynamics/'||route==='/contact/') await page.screenshot({path:'screenshots/'+(route==='/'?'home':route==='/contact/'?'contact':'vehicle-dynamics')+'-'+width+'.png',fullPage:true,animations:'disabled'});
     }
     await page.close();
   }
+  const reduced=await browser.newPage({viewport:{width:390,height:900},reducedMotion:'reduce'});
+  await reduced.goto(base);
+  assert.equal(await reduced.locator('.hero h1').evaluate(el=>getComputedStyle(el).animationName),'none');
+  assert.equal(await reduced.locator('html').evaluate(el=>getComputedStyle(el).scrollBehavior),'auto');
+  await reduced.close();
   console.log('Desktop and mobile route, layout, image and math checks passed');
 } finally {
   await browser?.close();
