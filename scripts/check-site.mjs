@@ -20,6 +20,10 @@ try {
       assert(res?.ok(), route+' not available');
       await page.evaluate(()=>document.fonts.ready);
       assert.equal(await page.locator('h1').count(),1,route+' heading');
+      const theme=await page.evaluate(()=>({background:getComputedStyle(document.body).backgroundImage,paper:getComputedStyle(document.body).backgroundColor,ink:getComputedStyle(document.body).color}));
+      assert(theme.background.includes('radial-gradient'),route+' missing shared atmosphere');
+      assert.equal(theme.paper,'rgb(250, 251, 252)',route+' light canvas');
+      assert.equal(theme.ink,'rgb(32, 41, 54)',route+' shared text color');
       assert((await page.title()).includes('Jesse Koeppel'),route+' page title branding');
       assert((await page.locator('.wordmark').innerText()).includes('JESSE KOEPPEL'),route+' header branding');
       assert((await page.locator('.site-footer').innerText()).includes('Jesse Koeppel'),route+' footer branding');
@@ -53,6 +57,9 @@ try {
         assert.equal(await page.locator('.identity-image[data-personal="true"] img[src="/documents/MeInCar.jpg"]').count(),1,'uploaded personal hero missing');
         assert.equal(await page.locator('.editorial-grid .project-card').count(),3);
         assert.equal(await page.locator('.editorial-grid .featured-project').count(),1);
+        assert.equal(await page.locator('.editorial-hero').evaluate(el=>getComputedStyle(el).backgroundImage),'none','hero should blend with page');
+        assert.equal(await page.locator('.editorial-hero').evaluate(el=>getComputedStyle(el).backgroundColor),'rgba(0, 0, 0, 0)','hero should be transparent');
+        assert.equal(await page.locator('.hero-primary').evaluate(el=>getComputedStyle(el).backgroundColor),'rgb(118, 44, 66)','shared accent');
         if(width>=1280){
           const shell=await page.locator('.shell').boundingBox();
           assert(shell.width>=Math.min(width,1500)-2,'desktop shell too narrow');
