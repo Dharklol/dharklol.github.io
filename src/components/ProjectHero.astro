@@ -1,36 +1,32 @@
 ---
 import ProjectFigure from './ProjectFigure.astro';
-import { fsaeSlides,dynamicsSlides } from '../data/project-visuals';
+import { fsaeSlides,dynamicsSlides,wydownSlides } from '../data/project-visuals';
 interface Props {kind:'fsae'|'dynamics'|'wydown';href?:string;}
 const {kind,href}=Astro.props;
-const slides=kind==='fsae'?fsaeSlides:kind==='dynamics'?dynamicsSlides:[];
+const slides=kind==='fsae'?fsaeSlides:kind==='dynamics'?dynamicsSlides:wydownSlides;
 ---
-{slides.length ? <portfolio-carousel class="visual-carousel" aria-label="Project visuals" data-interval="7000">
+{slides.length ? <portfolio-carousel class:list={['visual-carousel',kind==='fsae'?'photo-carousel':'chart-carousel']} aria-label="Project visuals" data-interval="7000">
 <div class="slide-stage">
 {slides.map((s,i)=><div class="visual-slide" hidden={i!==0}>
-{href ? <a href={href} class="slide-link" aria-label={'View project: '+s.alt}><img class:list={['project-figure',s.cad?'actual-render':kind==='dynamics'?'plot-render':'photo-render']} src={s.src} alt={s.alt} style={'object-position:'+s.position} loading={i===0?'eager':'lazy'}/></a> : <img class:list={['project-figure',s.cad?'actual-render':kind==='dynamics'?'plot-render':'photo-render']} src={s.src} alt={s.alt} style={'object-position:'+s.position} loading={i===0?'eager':'lazy'}/>}
-<span class="figure-label actual-label">{s.label}</span></div>)}
+{href?<a href={href} class="slide-link" aria-label={'View project: '+s.alt}><img class:list={['project-figure',kind==='fsae'?'photo-render':'plot-render']} src={s.src} alt={s.alt} style={'object-position:'+s.position} loading="eager"/></a>:<img class:list={['project-figure',kind==='fsae'?'photo-render':'plot-render']} src={s.src} alt={s.alt} style={'object-position:'+s.position} loading="eager"/>}
+</div>)}
 </div>
-{slides.length>1&&<div class="slide-controls"><button type="button" data-prev aria-label="Previous image">‹</button><span data-count aria-live="off">1 / {slides.length}</span><button type="button" data-next aria-label="Next image">›</button><button type="button" data-pause aria-label="Pause slideshow">Pause</button></div>}
-</portfolio-carousel> : <>{href?<a href={href} class="slide-link" aria-label="View project"><ProjectFigure kind={kind}/></a>:<ProjectFigure kind={kind}/>}<span class="figure-label">SCHEMATIC / ILLUSTRATIVE</span></>}
+{slides.length>1&&<button type="button" class="carousel-toggle" data-pause aria-label="Pause slideshow" title="Pause slideshow">Ⅱ</button>}
+</portfolio-carousel> : <>{href?<a href={href} class="slide-link" aria-label="View project"><ProjectFigure kind={kind}/></a>:<ProjectFigure kind={kind}/>}</>}
 <script>
-class PortfolioCarousel extends HTMLElement{
+class PortfolioCarousel extends HTMLElement {
  private timer:number|undefined;
  private cleanup:AbortController|undefined;
  connectedCallback(){
   const slides=Array.from(this.querySelectorAll<HTMLElement>('.visual-slide'));
   if(slides.length<2)return;
   const ac=new AbortController();this.cleanup=ac;
-  const options={signal:ac.signal};
-  const motion=matchMedia('(prefers-reduced-motion: reduce)');
+  const options={signal:ac.signal}, motion=matchMedia('(prefers-reduced-motion: reduce)');
   const pause=this.querySelector<HTMLButtonElement>('[data-pause]')!;
-  const count=this.querySelector<HTMLElement>('[data-count]')!;
   let i=0,manual=motion.matches,hover=false,focus=false;
   const stop=()=>{if(this.timer!==undefined)window.clearInterval(this.timer);this.timer=undefined;};
-  const show=(next:number)=>{i=(next+slides.length)%slides.length;slides.forEach((s,j)=>s.hidden=j!==i);count.textContent=(i+1)+' / '+slides.length;};
-  const sync=()=>{stop();pause.textContent=manual?'Play':'Pause';pause.setAttribute('aria-label',manual?'Play slideshow':'Pause slideshow');if(!manual&&!hover&&!focus&&!document.hidden)this.timer=window.setInterval(()=>show(i+1),Number(this.dataset.interval)||7000);};
-  this.querySelector('[data-prev]')?.addEventListener('click',()=>{show(i-1);sync();},options);
-  this.querySelector('[data-next]')?.addEventListener('click',()=>{show(i+1);sync();},options);
+  const show=()=>{i=(i+1)%slides.length;slides.forEach((s,j)=>s.hidden=j!==i);};
+  const sync=()=>{stop();const label=manual?'Play slideshow':'Pause slideshow';pause.textContent=manual?'▶':'Ⅱ';pause.setAttribute('aria-label',label);pause.title=label;if(!manual&&!hover&&!focus&&!document.hidden)this.timer=window.setInterval(show,Number(this.dataset.interval)||7000);};
   pause.addEventListener('click',()=>{manual=!manual;sync();},options);
   this.addEventListener('mouseenter',()=>{hover=true;sync();},options);
   this.addEventListener('mouseleave',()=>{hover=false;sync();},options);

@@ -1,0 +1,28 @@
+{
+  "scope": "Historical recorder audit and one separately recorded EC2 collection run; not execution or trading performance",
+  "sources": {
+    "burn_in": "Original recorder burn-in audit, 2026-09-03, PID 16910; aggregate counts retained from recorded experiment",
+    "latency": "Recorded EC2 Ohio 40-market, 1000-delta benchmark output; one run selected, not aggregated",
+    "methodology": "https://github.com/Dharklol/pi-controller/blob/4f77c50ad99beaddc6969b12fa1ca9fdf562115c/recorder/README.md"
+  },
+  "burn_in": {
+    "hours": 90.53,
+    "records": 1197341,
+    "chunks": 1076,
+    "deltas": 997249,
+    "snapshots": 908,
+    "trades": 199166,
+    "unclassified_by_reported_counts": 18,
+    "sequence_gaps": 0,
+    "reconnects": 8
+  },
+  "latency": {
+    "markets": 40,
+    "snapshots": 40,
+    "deltas": 1000,
+    "sequence_gaps": 0,
+    "median_ms": 5.7677,
+    "p95_ms": 8.7974,
+    "p99_ms": 10.2923
+  }
+}

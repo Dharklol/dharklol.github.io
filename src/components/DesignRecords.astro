@@ -1,0 +1,24 @@
+---
+const records=[
+ {title:'WUFR-26 steering final design review',meta:'2025 · Full team review',pdf:'/documents/wufr-26-steering-fdr.pdf',detail:'/documents/wufr-26-steering-fdr/'},
+ {title:'WUFR-27 steering final design review',meta:'2026 · Full team review',pdf:'/documents/wufr-27-steering-fdr.pdf',detail:'/documents/steering-fdr/'},
+ {title:'Left bevel-box housing',meta:'ST-70401-AA · Technical drawing',pdf:'/documents/st-70401-aa-bevel-box-housing-left.pdf'},
+ {title:'Secondary shaft',meta:'ST-70406-AA · Technical drawing',pdf:'/documents/st-70406-aa-secondary-shaft.pdf'},
+];
+---
+<div class="design-records">
+<h3>Design records</h3>
+<p>Original review documents and drawing sheets, with their revision and authorship blocks preserved. Expand a record to read the PDF here, or open it separately.</p>
+{records.map(record=><details class="design-record" data-pdf={record.pdf}><summary><span><strong>{record.title}</strong><small>{record.meta}</small></span><span aria-hidden="true" class="record-expand">+</span></summary><div class="record-content"><div class="record-links"><a href={record.pdf} target="_blank" rel="noopener">Open PDF ↗</a>{record.detail&&<a href={record.detail} target="_blank" rel="noopener">Design process ↗</a>}</div><div class="record-preview" data-title={record.title}></div><noscript>Open the PDF using the link above.</noscript></div></details>)}
+</div>
+<script>
+document.querySelectorAll<HTMLDetailsElement>('.design-record').forEach(record=>{
+ record.addEventListener('toggle',()=>{
+  const slot=record.querySelector<HTMLElement>('.record-preview');
+  if(!slot)return;
+  if(!record.open){slot.replaceChildren();return;}
+  const frame=document.createElement('object');frame.type='application/pdf';frame.data=record.dataset.pdf!;frame.setAttribute('aria-label',slot.dataset.title!);
+  const fallback=document.createElement('p');const link=document.createElement('a');link.href=frame.data;link.textContent='Open PDF directly';fallback.append(link);frame.append(fallback);slot.replaceChildren(frame);
+ });
+});
+</script>

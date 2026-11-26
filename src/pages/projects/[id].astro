@@ -1,6 +1,7 @@
 ---
 import Base from '../../layouts/Base.astro';
 import ProjectHero from '../../components/ProjectHero.astro';
+import DesignRecords from '../../components/DesignRecords.astro';
 import { getCollection, render } from 'astro:content';
 export async function getStaticPaths() {
   const projects = await getCollection('projects');
@@ -20,7 +21,7 @@ const {title,summary,discipline,status,tags,kind,order} = project.data;
 <div class="case-meta"><span>{status}</span><span>{tags.join(' / ')}</span></div>
 <div class="figure-wrap case-figure"><ProjectHero kind={kind}/></div>
 {sections.length > 4 && <nav class="article-contents" aria-label="On this page"><p class="eyebrow">ON THIS PAGE</p><ol>{sections.map(section=><li><a href={'#'+section.slug}>{section.text}</a></li>)}</ol></nav>}
-<div class="prose"><Content/></div>
+<div class="prose"><Content/>{kind==='fsae'&&<DesignRecords/>}</div>
 
 </article>
 </Base>
