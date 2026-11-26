@@ -1,8 +1,46 @@
 ---
 import ProjectFigure from './ProjectFigure.astro';
-import { suspensionRender } from '../data/project-visuals';
-interface Props {kind:'fsae'|'dynamics'|'wydown';}
-const {kind}=Astro.props;
-const actual=kind==='fsae'?suspensionRender:null;
+import { fsaeSlides,dynamicsSlides } from '../data/project-visuals';
+interface Props {kind:'fsae'|'dynamics'|'wydown';href?:string;}
+const {kind,href}=Astro.props;
+const slides=kind==='fsae'?fsaeSlides:kind==='dynamics'?dynamicsSlides:[];
 ---
-{actual ? <><img class="project-figure actual-render" src={actual} alt="CAD render of front and rear Formula SAE suspension assemblies" width="1439" height="893"/><span class="figure-label actual-label">SUSPENSION / CAD RENDER</span></> : <><ProjectFigure kind={kind}/><span class="figure-label">SCHEMATIC / ILLUSTRATIVE</span></>}
+{slides.length ? <portfolio-carousel class="visual-carousel" aria-label="Project visuals" data-interval="7000">
+<div class="slide-stage">
+{slides.map((s,i)=><div class="visual-slide" hidden={i!==0}>
+{href ? <a href={href} class="slide-link" aria-label={'View project: '+s.alt}><img class:list={['project-figure',s.cad?'actual-render':kind==='dynamics'?'plot-render':'photo-render']} src={s.src} alt={s.alt} style={'object-position:'+s.position} loading={i===0?'eager':'lazy'}/></a> : <img class:list={['project-figure',s.cad?'actual-render':kind==='dynamics'?'plot-render':'photo-render']} src={s.src} alt={s.alt} style={'object-position:'+s.position} loading={i===0?'eager':'lazy'}/>}
+<span class="figure-label actual-label">{s.label}</span></div>)}
+</div>
+{slides.length>1&&<div class="slide-controls"><button type="button" data-prev aria-label="Previous image">‹</button><span data-count aria-live="off">1 / {slides.length}</span><button type="button" data-next aria-label="Next image">›</button><button type="button" data-pause aria-label="Pause slideshow">Pause</button></div>}
+</portfolio-carousel> : <>{href?<a href={href} class="slide-link" aria-label="View project"><ProjectFigure kind={kind}/></a>:<ProjectFigure kind={kind}/>}<span class="figure-label">SCHEMATIC / ILLUSTRATIVE</span></>}
+<script>
+class PortfolioCarousel extends HTMLElement{
+ private timer:number|undefined;
+ private cleanup:AbortController|undefined;
+ connectedCallback(){
+  const slides=Array.from(this.querySelectorAll<HTMLElement>('.visual-slide'));
+  if(slides.length<2)return;
+  const ac=new AbortController();this.cleanup=ac;
+  const options={signal:ac.signal};
+  const motion=matchMedia('(prefers-reduced-motion: reduce)');
+  const pause=this.querySelector<HTMLButtonElement>('[data-pause]')!;
+  const count=this.querySelector<HTMLElement>('[data-count]')!;
+  let i=0,manual=motion.matches,hover=false,focus=false;
+  const stop=()=>{if(this.timer!==undefined)window.clearInterval(this.timer);this.timer=undefined;};
+  const show=(next:number)=>{i=(next+slides.length)%slides.length;slides.forEach((s,j)=>s.hidden=j!==i);count.textContent=(i+1)+' / '+slides.length;};
+  const sync=()=>{stop();pause.textContent=manual?'Play':'Pause';pause.setAttribute('aria-label',manual?'Play slideshow':'Pause slideshow');if(!manual&&!hover&&!focus&&!document.hidden)this.timer=window.setInterval(()=>show(i+1),Number(this.dataset.interval)||7000);};
+  this.querySelector('[data-prev]')?.addEventListener('click',()=>{show(i-1);sync();},options);
+  this.querySelector('[data-next]')?.addEventListener('click',()=>{show(i+1);sync();},options);
+  pause.addEventListener('click',()=>{manual=!manual;sync();},options);
+  this.addEventListener('mouseenter',()=>{hover=true;sync();},options);
+  this.addEventListener('mouseleave',()=>{hover=false;sync();},options);
+  this.addEventListener('focusin',()=>{focus=true;sync();},options);
+  this.addEventListener('focusout',e=>{if(!this.contains(e.relatedTarget as Node)){focus=false;sync();}},options);
+  document.addEventListener('visibilitychange',sync,options);
+  motion.addEventListener('change',()=>{if(motion.matches)manual=true;sync();},options);
+  sync();
+ }
+ disconnectedCallback(){this.cleanup?.abort();if(this.timer!==undefined)window.clearInterval(this.timer);}
+}
+if(!customElements.get('portfolio-carousel'))customElements.define('portfolio-carousel',PortfolioCarousel);
+</script>

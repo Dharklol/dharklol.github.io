@@ -6,8 +6,8 @@ const {project} = Astro.props;
 const {title,summary,discipline,kind,order} = project.data;
 ---
 <article class="project-card">
+<div class="figure-wrap"><ProjectHero kind={kind} href={'/projects/' + project.id + '/'}/></div>
 <a class="project-link" href={'/projects/' + project.id + '/'}>
-<div class="figure-wrap"><ProjectHero kind={kind}/></div>
 <div class="card-meta"><span>{String(order).padStart(2,'0')} / {discipline}</span><span aria-hidden="true">↗</span></div>
 <h3>{title}</h3>
 <p>{summary}</p>
