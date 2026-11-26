@@ -22,6 +22,16 @@ A lightweight Linux edge environment supports long-running acquisition, while cl
 
 A recorder burn-in validated more than 1.19 million records across over 1,000 data chunks. A separate AWS benchmark used up to 40 simultaneous market streams and reported approximately 6 ms median source-to-server latency, with zero observed sequence gaps during the benchmark runs. These are scoped recorder and collection measurements reported in my résumé, not order execution latency or a guarantee of future performance.
 
+![Recorder burn-in audit with recorded message counts](/figures/wydown/recorder-burnin.svg)
+
+*Historical recorder burn-in, August 31–September 3, 2026: 90.53 hours, 1,076 chunks, 1,197,341 records, zero sequence gaps and eight reconnects. The three named record categories account for 1,197,323 of the total.*
+
+![Latency quantiles from one EC2 Ohio market-data collection run](/figures/wydown/collection-latency.svg)
+
+*One recorded 40-market run with 1,000 deltas and zero sequence gaps. Exchange timestamp to EC2 receive time; not order execution latency. Other runs are not pooled into these percentiles.*
+
+[Download the aggregate benchmark data](/figures/wydown/benchmark-summary.json) · [Recorder methodology](https://github.com/Dharklol/pi-controller/blob/4f77c50ad99beaddc6969b12fa1ca9fdf562115c/recorder/README.md)
+
 The engineering priorities are data integrity, reproducibility and observable failure. A reconnect or missing sequence is a distinct condition, not an invitation to silently fabricate an uninterrupted book.
 
 ## Empirical research

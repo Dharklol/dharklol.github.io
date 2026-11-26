@@ -1,6 +1,7 @@
 import { existsSync } from 'node:fs';
 import { resolve } from 'node:path';
 const photos={
+ 'car-on-track':['WashU Racing car on course','Competition vehicle on course.'],
  'steering-build':['Steering column, bevel box and rack during assembly','Installed steering hardware during assembly and fitment.'],
  'suspension-failure':['Visible damage to a suspension member','Observed suspension damage. The photograph alone does not establish the root cause.'],
  'competition-setup':['Team preparing vehicle setup equipment at night','Team vehicle preparation during competition.'],

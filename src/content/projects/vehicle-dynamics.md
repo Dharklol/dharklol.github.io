@@ -134,13 +134,13 @@ The study did not select a preferred candidate, establish packaging feasibility 
 
 ### Original software report and downloadable evidence
 
-![Original solver report: rack demand across nominal cases](/figures/vehicle-dynamics/rack-demand-original.svg)
+![Signed rack demand change relative to reference](/figures/vehicle-dynamics/rack-demand-delta.svg)
 
-*Original software-generated figure from the analytical design workflow, nominal operating cases. The curves represent uncorrelated model output, not measured steering response.*
+![Signed front heading split change relative to reference](/figures/vehicle-dynamics/heading-split-delta.svg)
 
-![Original solver report: left minus right front heading across nominal cases](/figures/vehicle-dynamics/heading-split-original.svg)
+*Replotted from the original nominal comparison CSV. Subtracting the reference exposes small candidate effects that overlap in the absolute plots. The signed heading split is not Ackermann percentage, and neither plot represents measured response.*
 
-*Original software-generated front heading split report. This quantity is signed left-minus-right heading, not Ackermann percentage.*
+[Original absolute rack-demand plot](/figures/vehicle-dynamics/rack-demand-original.svg) · [Original absolute heading-split plot](/figures/vehicle-dynamics/heading-split-original.svg)
 
 The corresponding signed differences from the reference geometry are shown below; both candidates are re-equilibrated at each nominal case.
 

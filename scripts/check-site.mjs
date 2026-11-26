@@ -50,10 +50,10 @@ try {
         assert(await page.locator('.article-contents a').evaluateAll(links=>links.every(a=>document.getElementById(decodeURIComponent(a.hash.slice(1))))),'broken document section link');
       }
       if(route==='/'||route==='/projects/fsae/') {
-        const hero=page.locator('portfolio-carousel').filter({has:page.locator('img.actual-render')});
-        assert.equal(await hero.locator('.visual-slide').count(),5,'FSAE hero slides missing');
-        assert.equal(await hero.locator('img[src="/figures/fsae/photos/car-on-track.jpg"]').count(),1,'track photo missing');
-        assert.equal(await page.locator('img.actual-render[src="/figures/fsae/binder/suspension-render-transparent.webp"]').count(),1,'CAD render missing');
+        const hero=page.locator('portfolio-carousel.photo-carousel');
+        assert.equal(await hero.locator('.visual-slide').count(),3,'landscape FSAE slides missing');
+        assert.equal(await hero.locator('img.actual-render').count(),0,'CAD cutout should not rotate');
+        assert.equal(await hero.locator('[data-next],[data-prev],.slide-controls').count(),0,'navigation clutter');
       }
       if(route==='/projects/fsae/') {
         const photoFiles=['car-on-track','team-and-car','campus-outreach','competition-setup','steering-build','suspension-failure'];
@@ -64,8 +64,8 @@ try {
         }
         assert.equal(present,6,'all six photos are required');
         {
-          assert.equal(await page.locator('portfolio-carousel .visual-slide').count(),5,'photo carousel incomplete');
-          assert.equal(await page.locator('.prose .inline-photo').count(),3,'contextual photos missing');
+          assert.equal(await page.locator('portfolio-carousel .visual-slide').count(),3,'photo carousel incomplete');
+          assert.equal(await page.locator('.prose .inline-photo').count(),4,'contextual photos missing');
         }
         assert.equal(await page.locator('.evidence-gallery').count(),0,'duplicate end gallery');
         for(const name of ['st-70401-aa-bevel-box-housing-left.pdf','st-70406-aa-secondary-shaft.pdf']){
@@ -81,17 +81,25 @@ try {
           const path='/figures/fsae/binder/'+name;
           assert.equal(await page.locator('.prose a[href="'+path+'"] img[src="'+path+'"]').count(),1,'missing full-size image link: '+name);
         }
+        assert.equal(await page.locator('.design-records details').count(),4);
+        const first=page.locator('.design-records details').first();
+        await first.locator('summary').click();
+        await first.locator('object[type="application/pdf"]').waitFor();
+        assert.equal(await first.locator('object').getAttribute('data'),'/documents/wufr-26-steering-fdr.pdf');
+        await first.locator('summary').click();
+        await first.locator('object').waitFor({state:'detached'});
         assert.equal(await page.locator('main a[href="/documents/steering-fdr/"]').count(),1);
         assert.equal(await page.locator('main a[href="/documents/wufr-26-steering-fdr/"]').count(),1);
         assert(await page.locator('.katex-display').count()>=4);
       }
-      if(route==='/projects/wydown/') assert(await page.locator('.katex-display').count()>=2);
+      if(route==='/projects/wydown/') {
+        assert(await page.locator('.katex-display').count()>=2);
+        assert.equal(await page.locator('portfolio-carousel .visual-slide').count(),2);
+        const metrics=await page.request.get(base+'/figures/wydown/benchmark-summary.json');assert(metrics.ok());assert.equal((await metrics.json()).burn_in.records,1197341);
+      }
       if(route==='/projects/vehicle-dynamics/') {
-        const carousel=page.locator('portfolio-carousel');
-        await carousel.locator('[data-next]').click();
-        assert.equal(await carousel.locator('[data-count]').innerText(),'2 / 3');
-        await carousel.locator('[data-prev]').click();
-        assert.equal(await carousel.locator('[data-count]').innerText(),'1 / 3');
+        assert.equal(await page.locator('portfolio-carousel .visual-slide').count(),3);
+        assert.equal(await page.locator('portfolio-carousel [data-prev],portfolio-carousel [data-next]').count(),0);
         assert.equal(await page.locator('main a[href="/figures/vehicle-dynamics/comparisons.csv"]').count(),1);
         const csv=await page.request.get(base+'/figures/vehicle-dynamics/comparisons.csv');
         assert(csv.ok() && (await csv.text()).trim().split(/\r?\n/).length===52,'comparison CSV missing rows');
@@ -108,17 +116,22 @@ try {
   assert.equal(await reduced.locator('.hero h1').evaluate(el=>getComputedStyle(el).animationName),'none');
   assert.equal(await reduced.locator('html').evaluate(el=>getComputedStyle(el).scrollBehavior),'auto');
   await reduced.goto(base+'/projects/vehicle-dynamics/');
-  assert.equal(await reduced.locator('portfolio-carousel [data-pause]').innerText(),'Play');
+  assert.equal(await reduced.locator('portfolio-carousel [data-pause]').getAttribute('aria-label'),'Play slideshow');
   await reduced.goto(base+'/projects/fsae/');
   const fsaeCarousel=reduced.locator('portfolio-carousel');
-  assert.equal(await fsaeCarousel.locator('[data-count]').innerText(),'1 / 5');
-  await fsaeCarousel.locator('[data-next]').click();
-  assert.equal(await fsaeCarousel.locator('[data-count]').innerText(),'2 / 5');
-  await fsaeCarousel.locator('[data-prev]').click();
-  assert.equal(await fsaeCarousel.locator('[data-count]').innerText(),'1 / 5');
-  await fsaeCarousel.locator('[data-prev]').click();
-  assert.equal(await fsaeCarousel.locator('img.actual-render').isVisible(),true,'CAD slide not visible');
+  assert.equal(await fsaeCarousel.locator('[data-pause]').getAttribute('aria-label'),'Play slideshow');
+  assert.equal(await fsaeCarousel.locator('.visual-slide:not([hidden])').count(),1);
+  await fsaeCarousel.locator('[data-pause]').click();
+  assert.equal(await fsaeCarousel.locator('[data-pause]').getAttribute('aria-label'),'Pause slideshow');
   await reduced.close();
+  const rotation=await browser.newPage({viewport:{width:1280,height:900}});
+  await rotation.clock.install();
+  await rotation.goto(base+'/projects/wydown/');
+  const rot=rotation.locator('portfolio-carousel');
+  const firstSrc=await rot.locator('.visual-slide:not([hidden]) img').getAttribute('src');
+  await rotation.clock.fastForward(7100);
+  assert.notEqual(await rot.locator('.visual-slide:not([hidden]) img').getAttribute('src'),firstSrc,'automatic rotation failed');
+  await rotation.close();
   console.log('Desktop and mobile route, layout, image and math checks passed');
 } finally {
   await browser?.close();

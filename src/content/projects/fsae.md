@@ -131,6 +131,8 @@ The planned component and installed-system work includes direction-reversing ang
 
 <!-- portfolio-photo:competition-setup -->
 
+<!-- portfolio-photo:car-on-track -->
+
 Before leading the subsystem, I designed fixtures for Instron load-frame testing and characterized anti-roll-bar behavior across five adjustment settings, with loads up to 2,000 N. Measured component stiffness ranged from approximately 902 to 2,634 N/mm. I compared load-deflection data with analytical and FEA predictions to assess the component contribution to suspension roll stiffness. These are component test stiffnesses, not wheel rates or whole-vehicle roll stiffness.
 
 [![Instron anti-roll bar load-deflection curves](/figures/fsae/binder/arb-instron.jpg)](/figures/fsae/binder/arb-instron.jpg)
@@ -171,14 +173,7 @@ The team archive contains vehicle test notes, driver feedback, setup sheets and 
 
 The steering drawing set includes the left bevel-box housing (7075-T6 aluminum) and secondary shaft (AISI 4130 steel), both prepared by L. Lee with my system-lead review recorded in the title blocks. These are examples of drawing review, material selection, datum-based dimensional control and manufacture-oriented documentation. The original team drawing sheets are supplied below as examples of engineering documentation, with authorship and revision blocks preserved. They are dated design records, not current manufacturing authorization.
 
-| Drawing | Revision | Document |
-| --- | --- | --- |
-| Left bevel-box housing | ST-70401-AA | [View drawing (PDF)](/documents/st-70401-aa-bevel-box-housing-left.pdf) |
-| Secondary shaft | ST-70406-AA | [View drawing (PDF)](/documents/st-70406-aa-secondary-shaft.pdf) |
-
-## Design documentation
-
-The [steering final design review reader](/documents/steering-fdr/) provides a portfolio-facing technical digest of the full team review, with links to the associated publicly available engineering calculations. Both original steering reviews are now accessible as static PDFs from their respective reader pages. The [WUFR-26 design review digest](/documents/wufr-26-steering-fdr/) documents the preceding design cycle, including rack-speed selection and packaging trade-offs.
+Associated engineering calculations:
 
 - [Double-D fit and contact sizing](https://github.com/Dharklol/Proprietary-Suspension-Software-Development/blob/3300377a39bba1f4b27400794b6f30aa2b1ca00b/docs/models/steering/wufr27_double_d_fit_contact_screen.md)
 - [Nominal steering transmission and compliance study](https://github.com/Dharklol/Proprietary-Suspension-Software-Development/blob/3300377a39bba1f4b27400794b6f30aa2b1ca00b/docs/models/steering/wufr27_design_source_compliance_v1.md)
