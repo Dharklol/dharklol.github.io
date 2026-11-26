@@ -1,0 +1,8 @@
+---
+import ProjectFigure from './ProjectFigure.astro';
+import { suspensionRender } from '../data/project-visuals';
+interface Props {kind:'fsae'|'dynamics'|'wydown';}
+const {kind}=Astro.props;
+const actual=kind==='fsae'?suspensionRender:null;
+---
+{actual ? <><img class="project-figure actual-render" src={actual} alt="CAD render of front and rear Formula SAE suspension assemblies" width="1439" height="893"/><span class="figure-label actual-label">SUSPENSION / CAD RENDER</span></> : <><ProjectFigure kind={kind}/><span class="figure-label">SCHEMATIC / ILLUSTRATIVE</span></>}

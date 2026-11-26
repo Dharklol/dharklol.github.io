@@ -132,6 +132,28 @@ The toe perturbation produces a much larger heading-split response than the rack
 
 The study did not select a preferred candidate, establish packaging feasibility or predict actual steering effort. Front heading split is not itself an Ackermann percentage. The tire representation also includes provisional proxy and symmetry assumptions that have not been correlated to the car.
 
+### Original software report and downloadable evidence
+
+![Original solver report: rack demand across nominal cases](/figures/vehicle-dynamics/rack-demand-original.svg)
+
+*Original software-generated figure from the analytical design workflow, nominal operating cases. The curves represent uncorrelated model output, not measured steering response.*
+
+![Original solver report: left minus right front heading across nominal cases](/figures/vehicle-dynamics/heading-split-original.svg)
+
+*Original software-generated front heading split report. This quantity is signed left-minus-right heading, not Ackermann percentage.*
+
+The corresponding signed differences from the reference geometry are shown below; both candidates are re-equilibrated at each nominal case.
+
+| Operating case | Aft rack Δ (mm) | Forward rack Δ (mm) | Aft heading split Δ (°) | Forward heading split Δ (°) |
+| --- | ---: | ---: | ---: | ---: |
+| Straight | 0.0001 | -0.0001 | 0.0029 | -0.0028 |
+| Right moderate | -0.0484 | 0.0484 | 0.0141 | -0.0138 |
+| Left moderate | 0.0487 | -0.0487 | 0.0141 | -0.0138 |
+| Right high | -0.0841 | 0.0840 | 0.0336 | -0.0329 |
+| Left high | 0.0846 | -0.0845 | 0.0337 | -0.0331 |
+
+[Download the original 51-row comparison CSV](/figures/vehicle-dynamics/comparisons.csv) · [Source report directory](https://github.com/Dharklol/Proprietary-Suspension-Software-Development/blob/3300377a39bba1f4b27400794b6f30aa2b1ca00b/docs/reports/analytical_design_workflow_v0.1.0)
+
 ## Diagnosing the computational envelope
 
 A separate continuation experiment investigated whether failure at higher curvature was a numerical or physical boundary. At 8 m/s, the original solver bounds admitted solutions at |κ| = 0.12 m⁻¹ (approximately 0.78 g of prescribed kinematic acceleration), but failed at the next refined tested point, 0.125 m⁻¹.
@@ -140,9 +162,29 @@ A control experiment widened only the sideslip bound from ±0.08 to ±0.10 rad. 
 
 This distinction matters for design optimization: a failed nonlinear solve cannot simply be classified as poor handling, nor can a small residual establish physical fidelity.
 
+## Reduced transient verification
+
+The next model layer has progressed beyond the initial roadmap: the repository contains manufactured quarter-car and heave/pitch half-car verification cases. These deliberately simplified systems test the numerical implementation independently of vehicle-specific parameters.
+
+![Recorded quarter-car bump history for road, sprung mass and unsprung mass displacement](/figures/vehicle-dynamics/quarter-car-bump.svg)
+
+*Replotted from the original bump-history CSV (every fourth sample for display). The mass and stiffness values are manufactured fixture inputs; this is not the WUFR-26 ride response.*
+
+| Quarter-car harmonic time step (s) | Maximum state error | Error ratio from prior step |
+| ---: | ---: | ---: |
+| 0.1 | 2.288e-7 | — |
+| 0.05 | 1.434e-8 | 15.96 |
+| 0.025 | 8.977e-10 | 15.97 |
+
+The approximately sixteenfold error decrease with each halving of the time step is consistent with fourth-order convergence in this manufactured harmonic test. The bump run completed with a maximum energy residual of 8.525e-14 J.
+
+The half-car fixture exercised asymmetric front and rear road inputs at two time steps. Both runs completed, with a maximum matching state difference of 1.162e-12 in corresponding SI state units and a fine-step energy residual of 2.198e-15 J. These are verification checks, not physical correlation.
+
+[Quarter-car verification summary](/figures/vehicle-dynamics/quarter-car-verification.json) · [Half-car verification summary](/figures/vehicle-dynamics/half-car-verification.json) · [Original bump history](https://github.com/Dharklol/Proprietary-Suspension-Software-Development/blob/3300377a39bba1f4b27400794b6f30aa2b1ca00b/docs/reports/reduced_ride_verification_v0.1.0/bump_history.csv)
+
 ## Current scope and next steps
 
-The platform currently supports an internally synchronized, uncorrelated steady-cornering development workflow, with separate steering geometry and prescribed-load mechanical analyses. Its next technical increment is reduced transient modeling: wheel-coordinate stiffness, modal analysis and bounded quarter-car response with independent reference cases.
+The platform currently supports an internally synchronized, uncorrelated steady-cornering development workflow, with separate steering geometry and prescribed-load mechanical analyses. Reduced ride and heave/pitch verification fixtures are now recorded; integrating physically supported vehicle-specific parameters and correlating those models against measured response remain separate steps.
 
 Physical correlation, measured tire and damper inputs, full maneuver-dependent steering effort, integrated combined-slip/braking and aerodynamic models, and lap simulation remain future work or separately bounded calculations. I intend to compare appropriate model outputs with measured data when the vehicle and instrumentation are available.
 

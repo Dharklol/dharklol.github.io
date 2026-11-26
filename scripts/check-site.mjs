@@ -24,7 +24,7 @@ try {
       assert((await page.locator('.wordmark').innerText()).includes('JESSE KOEPPEL'),route+' header branding');
       assert((await page.locator('.site-footer').innerText()).includes('Jesse Koeppel'),route+' footer branding');
       assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),route+' horizontal overflow at '+width);
-      assert(await page.locator('img').evaluateAll(images=>images.every(im=>im.complete&&im.naturalWidth>0)),route+' broken image');
+      assert(await page.locator('img').evaluateAll(async images=>{await Promise.all(images.map(im=>{im.loading='eager';return im.decode()}));return images.every(im=>im.complete&&im.naturalWidth>0)}),route+' broken image');
       assert.equal(await page.locator('header nav a[href="https://www.linkedin.com/in/jesse-koeppel/"]').count(),1);
       assert.equal(await page.locator('header nav a[href="/contact/"]').count(),1);
       assert.equal(await page.locator('header nav a[href="/resume/"]').count(),1);
@@ -56,6 +56,9 @@ try {
       }
       if(route==='/projects/wydown/') assert(await page.locator('.katex-display').count()>=2);
       if(route==='/projects/vehicle-dynamics/') {
+        assert.equal(await page.locator('main a[href="/figures/vehicle-dynamics/comparisons.csv"]').count(),1);
+        const csv=await page.request.get(base+'/figures/vehicle-dynamics/comparisons.csv');
+        assert(csv.ok() && (await csv.text()).trim().split(/\r?\n/).length===52,'comparison CSV missing rows');
         assert(await page.locator('.katex-display').count()>=3,'display math missing');
         assert.equal(await page.locator('.katex-error').count(),0);
         assert(await page.locator('.article-contents a').evaluateAll(links=>links.every(a=>document.getElementById(decodeURIComponent(a.hash.slice(1))))),'broken contents link');

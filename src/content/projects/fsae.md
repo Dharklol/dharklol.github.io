@@ -121,11 +121,29 @@ Before leading the subsystem, I designed fixtures for Instron load-frame testing
 
 I also developed a chassis–suspension torsional-stiffness and load-transfer sensitivity analysis after competition feedback. The design objective was to keep chassis-induced lateral load-transfer redistribution below approximately one percentage point while preserving anti-roll-bar tuning authority. This is an analytical design criterion rather than a measured on-car result.
 
+The WUFR-26 suspension design binder (p. 49) reports the following signed understeer-gradient fits, using a linear assumption through 0.8 g:
+
+| Front / rear ARB setting | CCW (deg/g) | CW (deg/g) |
+| --- | ---: | ---: |
+| 1 / 5 | −6.22 | 3.15 |
+| 1 / 3 (driver preference) | −2.82 | 4.28 |
+| 5 / 1 | −0.90 | 4.45 |
+
+![Signed directional understeer gradients for three ARB settings](/figures/fsae/understeer-gradients.svg)
+
+*Replotted from the WUFR-26 design binder, p. 49. Signs and directional labels are preserved as reported; the values are not averaged across directions. The preferred setup reflects driver feedback, not proof of a universally optimal balance.*
+
+The team binder (p. 8) also records endurance telemetry exceeding 1.6 g lateral acceleration and reaching 1.2 g braking. These are team vehicle observations, not predictions of the simulation platform. The separate parked steering test on p. 44 reports 5.80° observed backlash against 5° expected and 13.53 N·m observed effort against 30.20 N·m expected; it is not directly comparable with the modeled 20-to-17.2 N·m design trade study.
+
 The team archive contains vehicle test notes, driver feedback, setup sheets and logged skidpad data. Quantitative handling conclusions require matched test conditions, calibrated channels and a reviewed analysis; they are not inferred from file names or isolated lap times.
+
+## Manufacturing documentation
+
+The steering drawing set includes the left bevel-box housing (7075-T6 aluminum) and secondary shaft (AISI 4130 steel), both prepared by L. Lee with my system-lead review recorded in the title blocks. These are examples of drawing review, material selection, datum-based dimensional control and manufacture-oriented documentation. The drawings carry explicit team confidentiality notices, so their production dimensions and full sheets are not reproduced here.
 
 ## Design documentation
 
-The [steering final design review reader](/documents/steering-fdr/) provides a portfolio-facing technical digest of the full team review, with links to the associated publicly available engineering calculations. The original review remains a working team document; a static PDF can be added to this reader without changing the team file. The [WUFR-26 design review digest](/documents/wufr-26-steering-fdr/) documents the preceding design cycle, including rack-speed selection and packaging trade-offs.
+The [steering final design review reader](/documents/steering-fdr/) provides a portfolio-facing technical digest of the full team review, with links to the associated publicly available engineering calculations. Both original steering reviews are now accessible as static PDFs from their respective reader pages. The [WUFR-26 design review digest](/documents/wufr-26-steering-fdr/) documents the preceding design cycle, including rack-speed selection and packaging trade-offs.
 
 - [Double-D fit and contact sizing](https://github.com/Dharklol/Proprietary-Suspension-Software-Development/blob/3300377a39bba1f4b27400794b6f30aa2b1ca00b/docs/models/steering/wufr27_double_d_fit_contact_screen.md)
 - [Nominal steering transmission and compliance study](https://github.com/Dharklol/Proprietary-Suspension-Software-Development/blob/3300377a39bba1f4b27400794b6f30aa2b1ca00b/docs/models/steering/wufr27_design_source_compliance_v1.md)
