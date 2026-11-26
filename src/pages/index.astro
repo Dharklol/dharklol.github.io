@@ -1,20 +1,28 @@
 ---
 import Base from '../layouts/Base.astro';
 import ProjectCard from '../components/ProjectCard.astro';
+import { portrait } from '../data/portrait';
 import { getCollection } from 'astro:content';
-const projects = (await getCollection('projects')).sort((a,b)=>a.data.order-b.data.order);
+const projects=(await getCollection('projects')).sort((a,b)=>a.data.order-b.data.order);
 ---
 <Base>
-<section class="hero" aria-labelledby="hero-title">
-<p class="eyebrow">ENGINEERING / COMPUTATION / RESEARCH</p>
-<h1 id="hero-title">Building and modeling<br class="desktop-break"/> complex systems.</h1>
-<div class="hero-rule"></div>
-<p class="hero-copy">Mechanical engineering, computational modeling, quantitative research, and the infrastructure connecting them.</p>
-<div class="hero-actions"><a class="text-link" href="#work">Selected work <span aria-hidden="true">↓</span></a><a class="text-link secondary-link" href="/resume/">Résumé <span aria-hidden="true">↗</span></a><a class="text-link secondary-link" href="/contact/">Get in touch <span aria-hidden="true">↗</span></a></div>
+<section class="hero editorial-hero" aria-labelledby="hero-title">
+  <div class="hero-identity">
+    <p class="eyebrow">MECHANICAL ENGINEERING / COMPUTATION / RESEARCH</p>
+    <h1 id="hero-title">Engineering physical systems.<br/><em>Developing computational ones.</em></h1>
+    <div class="hero-rule"></div>
+    <p class="hero-copy">I'm Jesse Koeppel, a mechanical engineering student at Washington University in St. Louis. I lead suspension engineering at WashU Racing and develop independent simulation and quantitative research systems.</p>
+    <div class="hero-actions"><a class="hero-primary" href="#work">Explore my work <span aria-hidden="true">↓</span></a><a class="hero-secondary" href="/resume/">Résumé <span aria-hidden="true">↗</span></a><a class="hero-secondary" href="/contact/">Contact <span aria-hidden="true">↗</span></a></div>
+  </div>
+  <figure class="identity-image" data-personal={String(portrait.personal)}>
+    <img src={portrait.src} alt={portrait.alt} fetchpriority="high" decoding="async"/>
+    <figcaption><span>{portrait.personal?'JESSE KOEPPEL':'WASHU RACING'}</span><span>FORMULA SAE</span></figcaption>
+  </figure>
+  <div class="hero-index" aria-hidden="true"><span>01 / DESIGN</span><span>02 / SIMULATION</span><span>03 / RESEARCH</span></div>
 </section>
-<section id="work" class="work-section" aria-labelledby="work-title">
-<div class="section-heading"><h2 id="work-title">Selected work</h2><span class="eyebrow">01 — 03</span></div>
-<div class="project-grid">{projects.map(project=><ProjectCard project={project}/>)}</div>
+<section id="work" class="work-section editorial-work" aria-labelledby="work-title">
+<div class="section-heading"><div><p class="eyebrow">PORTFOLIO / 01 — 03</p><h2 id="work-title">Selected work.</h2></div><p class="section-intro">From physical mechanisms and experimental testing to numerical models and financial data systems.</p></div>
+<div class="project-grid editorial-grid">{projects.map((project,i)=><ProjectCard project={project} featured={i===0}/>)}</div>
 </section>
-<section class="closing"><p class="eyebrow">ABOUT</p><h2>Engineering across disciplines.</h2><p>My interests sit at the intersection of physical systems, mathematical models and the software used to understand them.</p><a class="text-link" href="/about/">More about me ↗</a></section>
+<section class="closing editorial-closing"><div><p class="eyebrow">ABOUT / 04</p><h2>Engineering across disciplines.</h2></div><div><p>I’m interested in how models, measurements and computation inform better engineering decisions.</p><a class="text-link" href="/about/">More about me ↗</a></div></section>
 </Base>
