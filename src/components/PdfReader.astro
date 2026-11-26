@@ -1,0 +1,8 @@
+---
+interface Props { src: string | null; title: string; }
+const {src,title} = Astro.props;
+---
+{src && <section class="pdf-viewer" aria-label={title}>
+<div class="hero-actions"><a class="text-link" href={src}>Open PDF ↗</a><a class="text-link" href={src} download>Download PDF ↓</a></div>
+<object data={src} type="application/pdf" aria-label={title}><p>Inline PDF viewing is not supported. <a href={src}>Open the PDF directly.</a></p></object>
+</section>}

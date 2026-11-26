@@ -10,13 +10,13 @@ tags: [Steering, Mechanical design, CAD, FMEA, Experimental methods]
 
 ## Engineering a reliable steering system
 
-As steering subsystem lead for WashU Racing's WUFR-27 car, I have been working on the mechanical design, analysis and validation of a system that directly connects driver input to road-wheel motion. The design challenge is not simply to maximize a geometric steering metric: it is to deliver predictable response with limited free play, adequate stiffness, repeatable manufacture and straightforward maintenance.
+As suspension lead for WashU Racing, I headed the WUFR-26 and WUFR-27 steering final design reviews. I owned design and delivery of the WUFR-26 steering system, from CAD and drawing release to manufacturing, assembly, fitment and vehicle integration. My broader suspension responsibilities include a roughly nine-member team, 19 major assemblies and more than 120 part-numbered components. The design challenge is not simply to maximize a geometric steering metric: it is to deliver predictable response with limited free play, adequate stiffness, repeatable manufacture and straightforward maintenance.
 
 The project spans previous-car design evidence, failure investigation, a revised mechanical coupling, and an analytical workflow that connects steering to suspension and vehicle motion. This work is part of a collaborative Formula SAE program; the vehicle and its testing are team efforts.
 
 ## Design evolution: WUFR-26 to WUFR-27
 
-The WUFR-26 design targeted a 20% reduction in steering effort through rack placement, tie-rod and steer-arm changes, and selection of a slower rack. The team review reports a reduction from 20 to 17.2 N·m (14%) against the prior design, with the trade-off of increased maximum steering-wheel travel to approximately ±102°. This is a historical design-review result; the underlying measurement protocol and uncertainty are not established here.
+The WUFR-26 design targeted a 20% reduction in steering effort through rack placement, tie-rod and steer-arm changes, and selection of a slower rack. The design trade study predicts a reduction from 20 to 17.2 N·m (14%) against the prior design, with the trade-off of increased maximum steering-wheel travel to approximately ±102°. This is a modeled design result, not a measured reduction in driver torque. The WUFR-26 review separately records an earlier parked-effort test averaging 35.12 N·m against a calculated 34 N·m; that is a different load case.
 
 For WUFR-27 the team retained the nominal rack, tie-rod and steer-arm geometry because there was no reviewed physical evidence that the existing geometry was the dominant weakness. Instead, recurrent free play, slipping and failure of a friction-dependent shaft coupling motivated a reliability-focused redesign.
 
@@ -115,11 +115,17 @@ A 26-mode steering FMEA informs the proposed validation sequence. The objective 
 
 The planned component and installed-system work includes direction-reversing angular sweeps, proof and cyclic loading, backlash and hysteresis measurement, gear and bearing inspection, and correlation between steering input, rack travel and road-wheel headings. A rotary primary-shaft sensor complements the existing linear rack sensor.
 
-For the broader suspension program, anti-roll bar characterization and repeatable skidpad experiments are also important. The available team records include an ARB validation workbook, testing setup instructions and vehicle test procedures. Results are not quoted here until the relevant test conditions, measurements and individual contributions are confirmed.
+## Experimental suspension engineering
+
+Before leading the subsystem, I designed fixtures for Instron load-frame testing and characterized anti-roll-bar behavior across five adjustment settings, with loads up to 2,000 N. Measured component stiffness ranged from approximately 902 to 2,634 N/mm. I compared load-deflection data with analytical and FEA predictions to assess the component contribution to suspension roll stiffness. These are component test stiffnesses, not wheel rates or whole-vehicle roll stiffness.
+
+I also developed a chassis–suspension torsional-stiffness and load-transfer sensitivity analysis after competition feedback. The design objective was to keep chassis-induced lateral load-transfer redistribution below approximately one percentage point while preserving anti-roll-bar tuning authority. This is an analytical design criterion rather than a measured on-car result.
+
+The team archive contains vehicle test notes, driver feedback, setup sheets and logged skidpad data. Quantitative handling conclusions require matched test conditions, calibrated channels and a reviewed analysis; they are not inferred from file names or isolated lap times.
 
 ## Design documentation
 
-The [steering final design review reader](/documents/steering-fdr/) provides a portfolio-facing technical digest of the full team review, with links to the associated publicly available engineering calculations. The original review remains a working team document; an approved static PDF can be added to this reader without changing the team file.
+The [steering final design review reader](/documents/steering-fdr/) provides a portfolio-facing technical digest of the full team review, with links to the associated publicly available engineering calculations. The original review remains a working team document; a static PDF can be added to this reader without changing the team file. The [WUFR-26 design review digest](/documents/wufr-26-steering-fdr/) documents the preceding design cycle, including rack-speed selection and packaging trade-offs.
 
 - [Double-D fit and contact sizing](https://github.com/Dharklol/Proprietary-Suspension-Software-Development/blob/3300377a39bba1f4b27400794b6f30aa2b1ca00b/docs/models/steering/wufr27_double_d_fit_contact_screen.md)
 - [Nominal steering transmission and compliance study](https://github.com/Dharklol/Proprietary-Suspension-Software-Development/blob/3300377a39bba1f4b27400794b6f30aa2b1ca00b/docs/models/steering/wufr27_design_source_compliance_v1.md)

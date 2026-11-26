@@ -15,7 +15,7 @@ try {
   await mkdir('screenshots',{recursive:true});
   for(const width of [390,1280]) {
     const page=await browser.newPage({viewport:{width,height:900}});
-    for(const route of ['/','/about/','/contact/','/projects/fsae/','/projects/vehicle-dynamics/','/projects/wydown/','/documents/steering-fdr/']) {
+    for(const route of ['/','/about/','/contact/','/projects/fsae/','/projects/vehicle-dynamics/','/projects/wydown/','/documents/steering-fdr/','/documents/wufr-26-steering-fdr/','/resume/']) {
       const res=await page.goto(base+route);
       assert(res?.ok(), route+' not available');
       await page.evaluate(()=>document.fonts.ready);
@@ -27,6 +27,8 @@ try {
       assert(await page.locator('img').evaluateAll(images=>images.every(im=>im.complete&&im.naturalWidth>0)),route+' broken image');
       assert.equal(await page.locator('header nav a[href="https://www.linkedin.com/in/jesse-koeppel/"]').count(),1);
       assert.equal(await page.locator('header nav a[href="/contact/"]').count(),1);
+      assert.equal(await page.locator('header nav a[href="/resume/"]').count(),1);
+      for(const url of await page.locator('object[type="application/pdf"]').evaluateAll(els=>els.map(el=>el.data))) { const pdf=await page.request.get(url); assert(pdf.ok() && (pdf.headers()['content-type']||'').includes('pdf'), 'PDF unavailable: '+url); }
       if(route==='/contact/') {
         assert.equal(await page.locator('main a[href="mailto:jessemsteel@gmail.com"]').count(),1);
         assert.equal(await page.locator('main a[href="https://github.com/Dharklol"]').count(),1);
@@ -38,6 +40,7 @@ try {
       }
       if(route==='/projects/fsae/') {
         assert.equal(await page.locator('main a[href="/documents/steering-fdr/"]').count(),1);
+        assert.equal(await page.locator('main a[href="/documents/wufr-26-steering-fdr/"]').count(),1);
         assert(await page.locator('.katex-display').count()>=4);
       }
       if(route==='/projects/wydown/') assert(await page.locator('.katex-display').count()>=2);

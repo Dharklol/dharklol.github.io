@@ -20,6 +20,8 @@ Market microstructure research requires preserving the sequence of market events
 
 A lightweight Linux edge environment supports long-running acquisition, while cloud instances are useful for controlled latency comparisons. The accompanying control-plane repository deliberately restricts remote operations to the research project: file paths, service actions and permitted Git operations are bounded; arbitrary shell access is excluded.
 
+A recorder burn-in validated more than 1.19 million records across over 1,000 data chunks. A separate AWS benchmark used up to 40 simultaneous market streams and reported approximately 6 ms median source-to-server latency, with zero observed sequence gaps during the benchmark runs. These are scoped recorder and collection measurements reported in my résumé, not order execution latency or a guarantee of future performance.
+
 The engineering priorities are data integrity, reproducibility and observable failure. A reconnect or missing sequence is a distinct condition, not an invitation to silently fabricate an uninterrupted book.
 
 ## Empirical research
