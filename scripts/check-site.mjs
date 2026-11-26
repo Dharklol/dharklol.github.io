@@ -24,7 +24,7 @@ try {
       assert((await page.locator('.wordmark').innerText()).includes('JESSE KOEPPEL'),route+' header branding');
       assert((await page.locator('.site-footer').innerText()).includes('Jesse Koeppel'),route+' footer branding');
       assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),route+' horizontal overflow at '+width);
-      assert(await page.locator('img').evaluateAll(images=>images.every(im=>im.complete&&im.naturalWidth>0)),route+' broken image');
+      assert(await page.locator('img').evaluateAll(async images=>{await Promise.all(images.map(im=>{im.loading='eager';return im.decode()}));return images.every(im=>im.complete&&im.naturalWidth>0)}),route+' broken image');
       assert.equal(await page.locator('header nav a[href="https://www.linkedin.com/in/jesse-koeppel/"]').count(),1);
       assert.equal(await page.locator('header nav a[href="/contact/"]').count(),1);
       assert.equal(await page.locator('header nav a[href="/resume/"]').count(),1);
@@ -49,18 +49,29 @@ try {
         assert.equal(await page.locator('.document-reader .prose section').count(),9);
         assert(await page.locator('.article-contents a').evaluateAll(links=>links.every(a=>document.getElementById(decodeURIComponent(a.hash.slice(1))))),'broken document section link');
       }
+      if(route==='/'||route==='/projects/fsae/') {
+        assert.equal(await page.locator('img.actual-render[src="/figures/fsae/binder/suspension-render.jpg"]').count(),1,'CAD render missing');
+      }
       if(route==='/projects/fsae/') {
+        assert.equal(await page.locator('.evidence-gallery figure img').count(),5,'binder gallery incomplete');
+        for (const name of ['ackermann-optimization.jpg','arb-instron.jpg','understeer-curves.jpg','load-transfer-sensitivity.jpg','endurance-gg.jpg']) {
+          const path='/figures/fsae/binder/'+name;
+          assert.equal(await page.locator('.evidence-gallery a[href="'+path+'"] img[src="'+path+'"]').count(),1,'missing full-size image link: '+name);
+        }
         assert.equal(await page.locator('main a[href="/documents/steering-fdr/"]').count(),1);
         assert.equal(await page.locator('main a[href="/documents/wufr-26-steering-fdr/"]').count(),1);
         assert(await page.locator('.katex-display').count()>=4);
       }
       if(route==='/projects/wydown/') assert(await page.locator('.katex-display').count()>=2);
       if(route==='/projects/vehicle-dynamics/') {
+        assert.equal(await page.locator('main a[href="/figures/vehicle-dynamics/comparisons.csv"]').count(),1);
+        const csv=await page.request.get(base+'/figures/vehicle-dynamics/comparisons.csv');
+        assert(csv.ok() && (await csv.text()).trim().split(/\r?\n/).length===52,'comparison CSV missing rows');
         assert(await page.locator('.katex-display').count()>=3,'display math missing');
         assert.equal(await page.locator('.katex-error').count(),0);
         assert(await page.locator('.article-contents a').evaluateAll(links=>links.every(a=>document.getElementById(decodeURIComponent(a.hash.slice(1))))),'broken contents link');
       }
-      if(route==='/'||route==='/projects/vehicle-dynamics/'||route==='/contact/') await page.screenshot({path:'screenshots/'+(route==='/'?'home':route==='/contact/'?'contact':'vehicle-dynamics')+'-'+width+'.png',fullPage:true,animations:'disabled'});
+      if(route==='/'||route==='/projects/fsae/'||route==='/projects/vehicle-dynamics/'||route==='/contact/') await page.screenshot({path:'screenshots/'+(route==='/'?'home':route==='/contact/'?'contact':route==='/projects/fsae/'?'fsae':'vehicle-dynamics')+'-'+width+'.png',fullPage:true,animations:'disabled'});
     }
     await page.close();
   }
