@@ -15,7 +15,7 @@ try {
   await mkdir('screenshots',{recursive:true});
   for(const width of [390,1280]) {
     const page=await browser.newPage({viewport:{width,height:900}});
-    for(const route of ['/','/about/','/contact/','/projects/fsae/','/projects/vehicle-dynamics/','/projects/wydown/']) {
+    for(const route of ['/','/about/','/contact/','/projects/fsae/','/projects/vehicle-dynamics/','/projects/wydown/','/documents/steering-fdr/','/documents/wufr-26-steering-fdr/','/resume/']) {
       const res=await page.goto(base+route);
       assert(res?.ok(), route+' not available');
       await page.evaluate(()=>document.fonts.ready);
@@ -27,11 +27,34 @@ try {
       assert(await page.locator('img').evaluateAll(images=>images.every(im=>im.complete&&im.naturalWidth>0)),route+' broken image');
       assert.equal(await page.locator('header nav a[href="https://www.linkedin.com/in/jesse-koeppel/"]').count(),1);
       assert.equal(await page.locator('header nav a[href="/contact/"]').count(),1);
+      assert.equal(await page.locator('header nav a[href="/resume/"]').count(),1);
+      const requiredPdf = {'/resume/':'jesse-koeppel-resume.pdf','/documents/steering-fdr/':'wufr-27-steering-fdr.pdf','/documents/wufr-26-steering-fdr/':'wufr-26-steering-fdr.pdf'}[route];
+      if(requiredPdf) {
+        const path = '/documents/'+requiredPdf;
+        assert.equal(await page.locator('object[type="application/pdf"][data="'+path+'"]').count(),1,route+' PDF embed missing');
+        assert.equal(await page.locator('main a[download][href="'+path+'"]').count(),1,route+' PDF download missing');
+        const pdf = await page.request.get(base+path);
+        assert(pdf.ok() && (pdf.headers()['content-type']||'').includes('pdf'),path+' unavailable');
+        const bytes=await pdf.body();
+        assert(bytes.subarray(0,5).toString()==='%PDF-',path+' invalid PDF header');
+        assert(bytes.subarray(-2048).includes(Buffer.from('%%EOF')),path+' missing PDF end marker');
+        await pdf.dispose();
+      }
       if(route==='/contact/') {
         assert.equal(await page.locator('main a[href="mailto:jessemsteel@gmail.com"]').count(),1);
         assert.equal(await page.locator('main a[href="https://github.com/Dharklol"]').count(),1);
         assert.equal(await page.locator('main a[href="https://www.linkedin.com/in/jesse-koeppel/"]').count(),1);
       }
+      if(route==='/documents/steering-fdr/') {
+        assert.equal(await page.locator('.document-reader .prose section').count(),9);
+        assert(await page.locator('.article-contents a').evaluateAll(links=>links.every(a=>document.getElementById(decodeURIComponent(a.hash.slice(1))))),'broken document section link');
+      }
+      if(route==='/projects/fsae/') {
+        assert.equal(await page.locator('main a[href="/documents/steering-fdr/"]').count(),1);
+        assert.equal(await page.locator('main a[href="/documents/wufr-26-steering-fdr/"]').count(),1);
+        assert(await page.locator('.katex-display').count()>=4);
+      }
+      if(route==='/projects/wydown/') assert(await page.locator('.katex-display').count()>=2);
       if(route==='/projects/vehicle-dynamics/') {
         assert(await page.locator('.katex-display').count()>=3,'display math missing');
         assert.equal(await page.locator('.katex-error').count(),0);

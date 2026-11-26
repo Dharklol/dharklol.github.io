@@ -1,0 +1,20 @@
+---
+import Base from '../layouts/Base.astro';
+import PdfReader from '../components/PdfReader.astro';
+import { resumePdf } from '../data/documents';
+---
+<Base title="Résumé" description="Jesse Koeppel — engineering experience, education and technical projects.">
+<article class="case-study document-reader">
+<p class="eyebrow">RÉSUMÉ / JESSE KOEPPEL</p>
+<h1>Résumé</h1>
+<p class="lede">Mechanical engineering, computational mechanics and real-time research systems.</p>
+<PdfReader src={resumePdf} title="Jesse Koeppel résumé PDF"/>
+<div class="prose">
+<h2>Education</h2><p><strong>Washington University in St. Louis</strong><br/>B.S. Mechanical Engineering · Expected May 2028</p>
+<h2>Experience</h2><h3>WashU Racing — Formula SAE</h3><p>Suspension Lead · May 2025–present</p>
+<ul><li>Lead a roughly nine-member team across suspension, steering and wheels/tires, responsible for 19 major assemblies and over 120 part-numbered components.</li><li>Owned delivery of WUFR-26 steering, comprising five assemblies and 47 BOM part numbers, and headed both the WUFR-26 and WUFR-27 steering reviews.</li><li>Coordinate CAD, GD&amp;T, DFM, manufacturing and supplier interfaces.</li><li>Develop chassis stiffness and load-transfer sensitivity analyses.</li></ul>
+<p>Suspension Member · September 2024–May 2025</p><ul><li>Designed Instron test fixtures and characterized anti-roll-bar stiffness across five adjustment settings, with applied loads up to 2,000 N.</li><li>Supported CAD/FEA, fabrication, composite linkages and vehicle assembly.</li></ul>
+<h2>Selected projects</h2><p><a href="/projects/fsae/">Formula SAE steering system</a> · <a href="/projects/vehicle-dynamics/">Vehicle dynamics software</a> · <a href="/projects/wydown/">Real-time data acquisition and quantitative research</a></p>
+<h2>Technical skills</h2><p>SolidWorks, CAD, FEA, GD&amp;T, experimental validation, Python, MATLAB, Simulink, R, C++, C#, Linux, Git, Raspberry Pi, AWS EC2.</p>
+<p><a href="/contact/">Professional contact information ↗</a></p>
+</div></article></Base>

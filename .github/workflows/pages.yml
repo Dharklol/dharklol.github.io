@@ -24,6 +24,23 @@ jobs:
           test -f dist/projects/fsae/index.html
           test -f dist/projects/vehicle-dynamics/index.html
           test -f dist/projects/wydown/index.html
+          test -f dist/documents/steering-fdr/index.html
+          test -f dist/documents/wufr-26-steering-fdr/index.html
+          test -f dist/resume/index.html
+          test -s dist/documents/jesse-koeppel-resume.pdf
+          test -s dist/documents/wufr-26-steering-fdr.pdf
+          test -s dist/documents/wufr-27-steering-fdr.pdf
+      - name: Verify PDF readability and page counts
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq poppler-utils
+          for pdf in dist/documents/*.pdf; do
+            pdfinfo "$pdf" | grep '^Pages:'
+            pdftotext -f 1 -l 1 "$pdf" /tmp/portfolio-pdf-first-page.txt
+            test -s /tmp/portfolio-pdf-first-page.txt
+          done
+          test "$(pdfinfo dist/documents/jesse-koeppel-resume.pdf | awk '/^Pages:/{print $2}')" = 1
+          test "$(pdfinfo dist/documents/wufr-27-steering-fdr.pdf | awk '/^Pages:/{print $2}')" = 93
       - run: npx playwright install --with-deps chromium
       - run: npm run test:site
       - uses: actions/upload-artifact@v4

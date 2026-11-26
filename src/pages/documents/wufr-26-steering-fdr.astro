@@ -1,0 +1,21 @@
+---
+import Base from '../../layouts/Base.astro';
+import PdfReader from '../../components/PdfReader.astro';
+import { steering26FdrPdf } from '../../data/documents';
+---
+<Base title="WUFR-26 Steering Final Design Review">
+<article class="case-study document-reader">
+<a class="text-link" href="/projects/fsae/">← Formula SAE Engineering</a>
+<p class="eyebrow case-kicker">DESIGN DOCUMENTATION / WUFR-26</p>
+<h1>Steering Final Design Review</h1>
+<p class="lede">A digest of the August 2025 design review for the WUFR-26 steering system.</p>
+<div class="case-meta"><span>FDR lead · Jesse Koeppel</span><span>Team design record</span></div>
+<PdfReader src={steering26FdrPdf} title="WUFR-26 steering final design review"/>
+<div class="prose">
+<h2>Design objective</h2><p>Reduce steering effort while retaining predictable response, driver ergonomics and packaging compatibility. An earlier parked-steering test measured 35.12 N·m on average versus a calculated 34 N·m; this was a separate parked test, not the later modeled cornering-effort comparison.</p>
+<h2>Geometry trade study</h2><p>The design considered 4 and 3.5 in/rev rack options, tie-rod pickup locations, steer-arm geometry and rack placement using SolidWorks motion studies and MATLAB/Simulink. The final packaged arrangement used a 3.5 in/rev rack with approximately 67.7% Ackermann and ±102° steering input.</p>
+<h2>Packaging and implementation</h2><p>Chassis-node and A-arm interference constrained the final geometry. Alternative inboard pickup locations were evaluated, and rack height was adjusted to improve clearance. The final geometry was carried forward through CAD, manufacture and assembly.</p>
+<h2>Outcome and limits</h2><p>The final design predicted a 14% steering-effort reduction against the 20% target. Simulated handling and event-point projections are not presented as observed competition improvements. Later operating experience identified a recurring coupling issue that became the focus of the following year's redesign.</p>
+<p><a href="/documents/steering-fdr/">Read the WUFR-27 design review ↗</a></p>
+</div><section class="document-note"><p>{steering26FdrPdf ? 'The original design review is available above.' : 'This is a portfolio digest. The full WUFR-26 PDF has not yet been added.'}</p></section>
+</article></Base>
