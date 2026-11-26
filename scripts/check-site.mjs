@@ -50,7 +50,7 @@ try {
         assert(await page.locator('.article-contents a').evaluateAll(links=>links.every(a=>document.getElementById(decodeURIComponent(a.hash.slice(1))))),'broken document section link');
       }
       if(route==='/') {
-        assert.equal(await page.locator('.identity-image img').count(),1,'hero visual missing');
+        assert.equal(await page.locator('.identity-image[data-personal="true"] img[src="/documents/MeInCar.jpg"]').count(),1,'uploaded personal hero missing');
         assert.equal(await page.locator('.editorial-grid .project-card').count(),3);
         assert.equal(await page.locator('.editorial-grid .featured-project').count(),1);
         if(width>=1280){

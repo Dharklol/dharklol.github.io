@@ -16,7 +16,7 @@ const projects=(await getCollection('projects')).sort((a,b)=>a.data.order-b.data
   </div>
   <figure class="identity-image" data-personal={String(portrait.personal)}>
     <img src={portrait.src} alt={portrait.alt} fetchpriority="high" decoding="async"/>
-    <figcaption><span>{portrait.personal?'JESSE KOEPPEL':'WASHU RACING'}</span><span>FORMULA SAE / 125</span></figcaption>
+    <figcaption><span>{portrait.personal?'JESSE KOEPPEL':'WASHU RACING'}</span><span>FORMULA SAE</span></figcaption>
   </figure>
   <div class="hero-index" aria-hidden="true"><span>01 / DESIGN</span><span>02 / SIMULATION</span><span>03 / RESEARCH</span></div>
 </section>
