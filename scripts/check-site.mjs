@@ -53,6 +53,16 @@ try {
         assert.equal(await page.locator('img.actual-render[src="/figures/fsae/binder/suspension-render-transparent.webp"]').count(),1,'CAD render missing');
       }
       if(route==='/projects/fsae/') {
+        const photoFiles=['car-on-track','team-and-car','campus-outreach','competition-setup','steering-build','suspension-failure'];
+        let present=0;
+        for(const name of photoFiles){
+          const paths=['/figures/fsae/photos/'+name+'.jpg','/figures/fsae/photos/portfolio-photos/'+name+'.jpg'];
+          for(const path of paths){const asset=await page.request.get(base+path);if(asset.ok()&&(asset.headers()['content-type']||'').includes('image/')){present++;await asset.dispose();break;}await asset.dispose();}
+        }
+        if(present===6){
+          assert.equal(await page.locator('portfolio-carousel .visual-slide').count(),5,'photo carousel incomplete');
+          assert.equal(await page.locator('.prose .inline-photo').count(),3,'contextual photos missing');
+        }
         assert.equal(await page.locator('.evidence-gallery').count(),0,'duplicate end gallery');
         for (const name of ['ackermann-optimization.jpg','arb-instron.jpg','understeer-curves.jpg','load-transfer-sensitivity.jpg','endurance-gg.jpg']) {
           const path='/figures/fsae/binder/'+name;
@@ -84,6 +94,8 @@ try {
   await reduced.goto(base);
   assert.equal(await reduced.locator('.hero h1').evaluate(el=>getComputedStyle(el).animationName),'none');
   assert.equal(await reduced.locator('html').evaluate(el=>getComputedStyle(el).scrollBehavior),'auto');
+  await reduced.goto(base+'/projects/vehicle-dynamics/');
+  assert.equal(await reduced.locator('portfolio-carousel [data-pause]').innerText(),'Play');
   await reduced.close();
   console.log('Desktop and mobile route, layout, image and math checks passed');
 } finally {

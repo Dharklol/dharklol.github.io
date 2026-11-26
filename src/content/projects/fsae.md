@@ -54,6 +54,8 @@ The lesson was to separate what geometry can achieve from what a particular vehi
 
 ## Mechanical redesign: torque transfer and fit
 
+<!-- portfolio-photo:steering-build -->
+
 The prior set-screw interface transferred torque through localized contact and friction. The replacement double-D profile transfers torque through positive mating surfaces, with axial retention handled separately. Steel was retained after a proposed aluminum column and quick-release concept was evaluated against compatibility, procurement timing and marginal mass benefit.
 
 The change introduces a new engineering problem: controlling manufacturing clearance without binding or introducing excessive backlash. An idealized centered-profile calculation makes that trade-off explicit.
@@ -119,11 +121,15 @@ The design review separately considers noncircular shaft torsion, local contact,
 
 ## Validation and testability
 
+<!-- portfolio-photo:suspension-failure -->
+
 A 26-mode steering FMEA informs the proposed validation sequence. The objective is to distinguish manufacturing fit, elastic response, mechanical lost motion and the nominal rigid kinematics rather than folding them into a single unexplained steering error.
 
 The planned component and installed-system work includes direction-reversing angular sweeps, proof and cyclic loading, backlash and hysteresis measurement, gear and bearing inspection, and correlation between steering input, rack travel and road-wheel headings. A rotary primary-shaft sensor complements the existing linear rack sensor.
 
 ## Experimental suspension engineering
+
+<!-- portfolio-photo:competition-setup -->
 
 Before leading the subsystem, I designed fixtures for Instron load-frame testing and characterized anti-roll-bar behavior across five adjustment settings, with loads up to 2,000 N. Measured component stiffness ranged from approximately 902 to 2,634 N/mm. I compared load-deflection data with analytical and FEA predictions to assess the component contribution to suspension roll stiffness. These are component test stiffnesses, not wheel rates or whole-vehicle roll stiffness.
 
