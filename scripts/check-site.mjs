@@ -20,6 +20,9 @@ try {
       assert(res?.ok(), route+' not available');
       await page.evaluate(()=>document.fonts.ready);
       assert.equal(await page.locator('h1').count(),1,route+' heading');
+      assert((await page.title()).includes('Jesse Koeppel'),route+' page title branding');
+      assert((await page.locator('.wordmark').innerText()).includes('JESSE KOEPPEL'),route+' header branding');
+      assert((await page.locator('.site-footer').innerText()).includes('Jesse Koeppel'),route+' footer branding');
       assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),route+' horizontal overflow at '+width);
       assert(await page.locator('img').evaluateAll(images=>images.every(im=>im.complete&&im.naturalWidth>0)),route+' broken image');
       assert.equal(await page.locator('header nav a[href="https://www.linkedin.com/in/jesse-koeppel/"]').count(),1);
