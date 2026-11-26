@@ -64,3 +64,14 @@ h3 {font-size:clamp(1.45rem,2.6vw,1.9rem); margin:.45rem 0 .65rem}
 .prose a {color:var(--accent); overflow-wrap:anywhere}
 @media(max-width:640px) {.project-grid {grid-template-columns:1fr;gap:2rem}.desktop-break{display:none}.site-header{align-items:flex-start}.hero{padding-top:3rem}.case-study{padding-top:2.5rem}}
 @media(prefers-reduced-motion:reduce) {html{scroll-behavior:auto}}
+
+/* Technical case-study evidence: fluid figures, accessible code, responsive tables. */
+.prose img {display:block;max-width:100%;height:auto;border:1px solid var(--line);margin:1.5rem 0 .5rem}
+.prose p:has(> img) + p > em {display:block;font-size:.83rem;color:var(--muted);line-height:1.5}
+.prose h3 {font-size:1.35rem;margin:1.8rem 0 .65rem;letter-spacing:-.015em}
+.prose table {display:block;max-width:100%;overflow-x:auto;border-collapse:collapse;margin:1.5rem 0;font-size:.85rem}
+.prose th,.prose td {padding:.65rem .75rem;text-align:left;border-bottom:1px solid var(--line)}
+.prose th {font-weight:600;background:var(--figure)}
+.prose td:not(:first-child),.prose th:not(:first-child) {text-align:right;font-variant-numeric:tabular-nums}
+.prose pre {padding:1rem;overflow-x:auto;border:1px solid var(--line);font-size:.85rem;border-radius:3px}
+.prose pre code {font-family:var(--mono)}
