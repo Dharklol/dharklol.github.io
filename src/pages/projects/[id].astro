@@ -1,7 +1,7 @@
 ---
 import Base from '../../layouts/Base.astro';
 import ProjectHero from '../../components/ProjectHero.astro';
-import { binderFigures } from '../../data/project-visuals';
+import { fsaePhotos } from '../../data/project-visuals';
 import { getCollection, render } from 'astro:content';
 export async function getStaticPaths() {
   const projects = await getCollection('projects');
@@ -22,6 +22,6 @@ const {title,summary,discipline,status,tags,kind,order} = project.data;
 <div class="figure-wrap case-figure"><ProjectHero kind={kind}/></div>
 {sections.length > 4 && <nav class="article-contents" aria-label="On this page"><p class="eyebrow">ON THIS PAGE</p><ol>{sections.map(section=><li><a href={'#'+section.slug}>{section.text}</a></li>)}</ol></nav>}
 <div class="prose"><Content/></div>
-{kind==='fsae' && binderFigures.length>0 && <section class="evidence-gallery" aria-labelledby="evidence-title"><h2 id="evidence-title">Selected design-binder figures</h2><p class="caption-copy">Original team evidence, cropped for readability. Select any figure to open its full-size image.</p>{binderFigures.map(fig=><figure><a href={fig.src!} target="_blank" rel="noopener"><img src={fig.src!} alt={fig.title} loading="lazy"/></a><figcaption><strong>{fig.title}.</strong> {fig.caption}</figcaption></figure>)}</section>}
+{kind==='fsae' && fsaePhotos.length>0 && <section class="photo-archive" aria-labelledby="photo-title"><h2 id="photo-title">Workshop and competition</h2><div class="photo-grid">{fsaePhotos.filter(p=>['steering-build.jpg','suspension-failure.jpg'].includes(p.file)).map(p=><figure><a href={p.src!}><img src={p.src!} alt={p.alt} loading="lazy"/></a><figcaption>{p.label}</figcaption></figure>)}</div></section>}
 </article>
 </Base>

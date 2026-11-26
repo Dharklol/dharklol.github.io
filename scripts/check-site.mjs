@@ -50,13 +50,13 @@ try {
         assert(await page.locator('.article-contents a').evaluateAll(links=>links.every(a=>document.getElementById(decodeURIComponent(a.hash.slice(1))))),'broken document section link');
       }
       if(route==='/'||route==='/projects/fsae/') {
-        assert.equal(await page.locator('img.actual-render[src="/figures/fsae/binder/suspension-render.jpg"]').count(),1,'CAD render missing');
+        assert.equal(await page.locator('img.actual-render[src="/figures/fsae/binder/suspension-render-transparent.webp"]').count(),1,'CAD render missing');
       }
       if(route==='/projects/fsae/') {
-        assert.equal(await page.locator('.evidence-gallery figure img').count(),5,'binder gallery incomplete');
+        assert.equal(await page.locator('.evidence-gallery').count(),0,'duplicate end gallery');
         for (const name of ['ackermann-optimization.jpg','arb-instron.jpg','understeer-curves.jpg','load-transfer-sensitivity.jpg','endurance-gg.jpg']) {
           const path='/figures/fsae/binder/'+name;
-          assert.equal(await page.locator('.evidence-gallery a[href="'+path+'"] img[src="'+path+'"]').count(),1,'missing full-size image link: '+name);
+          assert.equal(await page.locator('.prose a[href="'+path+'"] img[src="'+path+'"]').count(),1,'missing full-size image link: '+name);
         }
         assert.equal(await page.locator('main a[href="/documents/steering-fdr/"]').count(),1);
         assert.equal(await page.locator('main a[href="/documents/wufr-26-steering-fdr/"]').count(),1);
@@ -64,6 +64,11 @@ try {
       }
       if(route==='/projects/wydown/') assert(await page.locator('.katex-display').count()>=2);
       if(route==='/projects/vehicle-dynamics/') {
+        const carousel=page.locator('portfolio-carousel');
+        await carousel.locator('[data-next]').click();
+        assert.equal(await carousel.locator('[data-count]').innerText(),'2 / 3');
+        await carousel.locator('[data-prev]').click();
+        assert.equal(await carousel.locator('[data-count]').innerText(),'1 / 3');
         assert.equal(await page.locator('main a[href="/figures/vehicle-dynamics/comparisons.csv"]').count(),1);
         const csv=await page.request.get(base+'/figures/vehicle-dynamics/comparisons.csv');
         assert(csv.ok() && (await csv.text()).trim().split(/\r?\n/).length===52,'comparison CSV missing rows');
