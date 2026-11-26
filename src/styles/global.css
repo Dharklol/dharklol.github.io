@@ -75,3 +75,23 @@ h3 {font-size:clamp(1.45rem,2.6vw,1.9rem); margin:.45rem 0 .65rem}
 .prose td:not(:first-child),.prose th:not(:first-child) {text-align:right;font-variant-numeric:tabular-nums}
 .prose pre {padding:1rem;overflow-x:auto;border:1px solid var(--line);font-size:.85rem;border-radius:3px}
 .prose pre code {font-family:var(--mono)}
+
+/* Long-form technical reading and mathematical typography */
+.case-study {max-width: 800px; min-width:0}
+.prose {max-width: 74ch; overflow-wrap:break-word; line-height:1.8}
+.prose h2,.prose h3 {scroll-margin-top:1rem}
+.prose h2 {margin-top:2.9rem; padding-top:1.1rem; border-top:1px solid var(--line)}
+.prose .katex-display {max-width:100%; overflow-x:auto; overflow-y:hidden; padding:.75rem .15rem; margin:1.35rem 0}
+.prose .katex {font-size:1.08em}
+.article-contents {display:block; border-block:1px solid var(--line); padding:1rem 0; margin:0 0 2.2rem}
+.article-contents .eyebrow {margin:0 0 .6rem}
+.article-contents ol {columns:2; column-gap:2rem; margin:0; padding-left:1.35rem; font-size:.86rem; color:var(--muted)}
+.article-contents li {break-inside:avoid; padding:.18rem 0}
+.article-contents a {text-decoration:none}
+.article-contents a:hover {text-decoration:underline}
+@media(max-width:640px) {
+ .article-contents ol {columns:1}
+ .prose .katex-display {font-size:.88rem}
+ .prose th,.prose td {padding:.5rem}
+ .prose h2 {margin-top:2.3rem}
+}

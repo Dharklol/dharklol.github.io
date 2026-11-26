@@ -6,12 +6,19 @@
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
-    "preview": "astro preview"
+    "preview": "astro preview",
+    "test:site": "node scripts/check-site.mjs"
   },
   "engines": {
     "node": ">=22"
   },
   "dependencies": {
-    "astro": "^5.16.0"
+    "astro": "^5.16.0",
+    "remark-math": "^6.0.0",
+    "rehype-katex": "^7.0.1",
+    "katex": "^0.16.22"
+  },
+  "devDependencies": {
+    "playwright": "^1.56.0"
   }
 }

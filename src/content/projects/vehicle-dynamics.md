@@ -35,14 +35,17 @@ The model is headless; the reporting layer consumes solved evidence rather than 
 
 ### Steady cornering as a nonlinear equilibrium problem
 
-Given a prescribed forward speed V and signed path curvature κ, the steady yaw rate is r = Vκ and the magnitude of the planar acceleration is V²|κ|. The model evaluates wheel velocities and signed tire slips from the current motion and geometry, including nonzero body sideslip.
+Given a prescribed forward speed V and signed path curvature κ, the steady yaw rate is $r=V\kappa$ and the magnitude of the planar acceleration is $V^2|\kappa|$. The model evaluates wheel velocities and signed tire slips from the current motion and geometry, including nonzero body sideslip.
 
 The ten unknowns are body heave, roll and pitch; sideslip; rack displacement; a virtual tangential holding force at the current center of mass; and the four wheel normal reactions. In compact notation:
 
-```text
-x = [z, φ, θ, β, s, H, Fz_FL, Fz_FR, Fz_RL, Fz_RR]
-R(x; V, κ, configuration) = 0
-```
+$$
+\begin{aligned}
+\mathbf{x} &= [z,\phi,\theta,\beta,s,H,\\
+&\qquad F_{z,FL},F_{z,FR},F_{z,RL},F_{z,RR}]^{\mathsf T}\\
+\mathbf{R}(\mathbf{x};V,\kappa,\mathcal{C}) &= \mathbf{0}
+\end{aligned}
+$$
 
 Three reduced body balances, four constrained wheel balances, two horizontal force balances and one yaw balance form the ten residual equations. At each trial, lateral tire forces are evaluated forward at the trial normal load, pressure, slip and inclination, rather than prescribing their values in advance.
 
@@ -50,7 +53,12 @@ The holding force is an explicit idealization needed to prescribe steady speed i
 
 ### Virtual work and physical closure
 
-A central issue in the mechanics is how forces are mapped into generalized coordinates. For a force F applied to a material point p with Jacobian J = ∂p/∂q, its generalized force contribution is JᵀF. The model also checks the full physical force and moment balance independently of the reduced equations.
+A central issue in the mechanics is how forces are mapped into generalized coordinates. For a force $\mathbf{F}$ applied to a material point $\mathbf{p}$ with Jacobian $\mathbf{J}=\partial\mathbf{p}/\partial\mathbf{q}$, its generalized force contribution is
+
+$$
+\mathbf{Q}=\mathbf{J}^{\mathsf T}\mathbf{F}.
+$$
+ The model also checks the full physical force and moment balance independently of the reduced equations.
 
 During development, an important discrepancy emerged: differentiating the moving geometric lowest point of a rolling circular tire is not equivalent to differentiating the instantaneous material point to which the force is applied. The former can satisfy the reduced equations while violating independent moment closure.
 
@@ -70,13 +78,14 @@ Before relying on native vehicle inputs, I use manufactured reference cases whos
 
 For mass m, CG-to-axle distances a and b, wheelbase L = a + b, and **whole-axle** cornering stiffnesses C_f and C_r, the linear force and yaw balances give the first-order front steering gradient:
 
-```text
-F_f + F_r = m V² κ
-a F_f − b F_r = 0
-
-δ/κ = L + (m V²/L)(b/C_f − a/C_r)
-β/κ = b − m V²a/(L C_r)
-```
+$$
+\begin{aligned}
+F_f+F_r &= mV^2\kappa\\
+aF_f-bF_r &= 0\\[4pt]
+\frac{\delta}{\kappa} &= L+\frac{mV^2}{L}\left(\frac{b}{C_f}-\frac{a}{C_r}\right)\\[4pt]
+\frac{\beta}{\kappa} &= b-\frac{mV^2a}{LC_r}
+\end{aligned}
+$$
 
 The four-wheel kernel is expected to approach these expressions in the small-curvature limit, not reproduce them exactly at finite curvature. The independent reference uses declared synthetic fixture constants only, not the coupled solver's own outputs.
 
