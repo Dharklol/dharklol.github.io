@@ -13,7 +13,7 @@ try {
   }
   browser=await chromium.launch();
   await mkdir('screenshots',{recursive:true});
-  for(const width of [390,1280]) {
+  for(const width of [390,768,1280,1920]) {
     const page=await browser.newPage({viewport:{width,height:900}});
     for(const route of ['/','/about/','/contact/','/projects/fsae/','/projects/vehicle-dynamics/','/projects/wydown/','/documents/steering-fdr/','/documents/wufr-26-steering-fdr/','/resume/']) {
       const res=await page.goto(base+route);
@@ -48,6 +48,17 @@ try {
       if(route==='/documents/steering-fdr/') {
         assert.equal(await page.locator('.document-reader .prose section').count(),9);
         assert(await page.locator('.article-contents a').evaluateAll(links=>links.every(a=>document.getElementById(decodeURIComponent(a.hash.slice(1))))),'broken document section link');
+      }
+      if(route==='/') {
+        assert.equal(await page.locator('.identity-image img').count(),1,'hero visual missing');
+        assert.equal(await page.locator('.editorial-grid .project-card').count(),3);
+        assert.equal(await page.locator('.editorial-grid .featured-project').count(),1);
+        if(width>=1280){
+          const shell=await page.locator('.shell').boundingBox();
+          assert(shell.width>=Math.min(width,1500)-2,'desktop shell too narrow');
+          const hero=await page.locator('.editorial-hero').boundingBox();
+          assert(hero.width>=width*.70,'desktop hero too narrow');
+        }
       }
       if(route==='/'||route==='/projects/fsae/') {
         const hero=page.locator('portfolio-carousel.photo-carousel');

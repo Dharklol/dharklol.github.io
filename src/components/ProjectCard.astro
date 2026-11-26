@@ -1,15 +1,16 @@
 ---
 import type { CollectionEntry } from 'astro:content';
 import ProjectHero from './ProjectHero.astro';
-interface Props { project: CollectionEntry<'projects'>; }
-const {project} = Astro.props;
+interface Props { project: CollectionEntry<'projects'>; featured?: boolean; }
+const {project,featured=false} = Astro.props;
 const {title,summary,discipline,kind,order} = project.data;
 ---
-<article class="project-card">
+<article class:list={['project-card',featured&&'featured-project']} data-kind={kind}>
 <div class="figure-wrap"><ProjectHero kind={kind} href={'/projects/' + project.id + '/'}/></div>
 <a class="project-link" href={'/projects/' + project.id + '/'}>
 <div class="card-meta"><span>{String(order).padStart(2,'0')} / {discipline}</span><span aria-hidden="true">↗</span></div>
 <h3>{title}</h3>
 <p>{summary}</p>
+{featured&&<span class="featured-note">Two steering design cycles · Design and experimental validation</span>}<span class="project-read">Read case study <span aria-hidden="true">↗</span></span>
 </a>
 </article>
