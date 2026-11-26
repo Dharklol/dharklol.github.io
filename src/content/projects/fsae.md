@@ -32,7 +32,7 @@ These are design-review dispositions, not a declaration of installed performance
 
 ## Steering kinematics and the Ackermann question
 
-For an ideal low-speed bicycle geometry with wheelbase $L$ and front track $t$, the inside and outside wheel angles satisfy
+For ideal low-speed Ackermann geometry with wheelbase $L$ and front track $t$, the inside and outside wheel angles satisfy
 
 $$
 \cot\delta_o-\cot\delta_i=\frac{t}{L}.
