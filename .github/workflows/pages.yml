@@ -30,6 +30,8 @@ jobs:
           test -s dist/documents/jesse-koeppel-resume.pdf
           test -s dist/documents/wufr-26-steering-fdr.pdf
           test -s dist/documents/wufr-27-steering-fdr.pdf
+          test -s dist/documents/st-70401-aa-bevel-box-housing-left.pdf
+          test -s dist/documents/st-70406-aa-secondary-shaft.pdf
       - name: Verify PDF readability and page counts
         run: |
           sudo apt-get update -qq
@@ -41,6 +43,8 @@ jobs:
           done
           test "$(pdfinfo dist/documents/jesse-koeppel-resume.pdf | awk '/^Pages:/{print $2}')" = 1
           test "$(pdfinfo dist/documents/wufr-27-steering-fdr.pdf | awk '/^Pages:/{print $2}')" = 93
+          test "$(pdfinfo dist/documents/st-70401-aa-bevel-box-housing-left.pdf | awk '/^Pages:/{print $2}')" = 1
+          test "$(pdfinfo dist/documents/st-70406-aa-secondary-shaft.pdf | awk '/^Pages:/{print $2}')" = 1
       - run: npx playwright install --with-deps chromium
       - run: npm run test:site
       - uses: actions/upload-artifact@v4

@@ -169,7 +169,12 @@ The team archive contains vehicle test notes, driver feedback, setup sheets and 
 
 ## Manufacturing documentation
 
-The steering drawing set includes the left bevel-box housing (7075-T6 aluminum) and secondary shaft (AISI 4130 steel), both prepared by L. Lee with my system-lead review recorded in the title blocks. These are examples of drawing review, material selection, datum-based dimensional control and manufacture-oriented documentation. The drawings carry explicit team confidentiality notices, so their production dimensions and full sheets are not reproduced here.
+The steering drawing set includes the left bevel-box housing (7075-T6 aluminum) and secondary shaft (AISI 4130 steel), both prepared by L. Lee with my system-lead review recorded in the title blocks. These are examples of drawing review, material selection, datum-based dimensional control and manufacture-oriented documentation. The original team drawing sheets are supplied below as examples of engineering documentation, with authorship and revision blocks preserved. They are dated design records, not current manufacturing authorization.
+
+| Drawing | Revision | Document |
+| --- | --- | --- |
+| Left bevel-box housing | ST-70401-AA | [View drawing (PDF)](/documents/st-70401-aa-bevel-box-housing-left.pdf) |
+| Secondary shaft | ST-70406-AA | [View drawing (PDF)](/documents/st-70406-aa-secondary-shaft.pdf) |
 
 ## Design documentation
 

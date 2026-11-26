@@ -50,6 +50,9 @@ try {
         assert(await page.locator('.article-contents a').evaluateAll(links=>links.every(a=>document.getElementById(decodeURIComponent(a.hash.slice(1))))),'broken document section link');
       }
       if(route==='/'||route==='/projects/fsae/') {
+        const hero=page.locator('portfolio-carousel').filter({has:page.locator('img.actual-render')});
+        assert.equal(await hero.locator('.visual-slide').count(),5,'FSAE hero slides missing');
+        assert.equal(await hero.locator('img[src="/figures/fsae/photos/car-on-track.jpg"]').count(),1,'track photo missing');
         assert.equal(await page.locator('img.actual-render[src="/figures/fsae/binder/suspension-render-transparent.webp"]').count(),1,'CAD render missing');
       }
       if(route==='/projects/fsae/') {
@@ -59,11 +62,21 @@ try {
           const paths=['/figures/fsae/photos/'+name+'.jpg','/figures/fsae/photos/portfolio-photos/'+name+'.jpg'];
           for(const path of paths){const asset=await page.request.get(base+path);if(asset.ok()&&(asset.headers()['content-type']||'').includes('image/')){present++;await asset.dispose();break;}await asset.dispose();}
         }
-        if(present===6){
+        assert.equal(present,6,'all six photos are required');
+        {
           assert.equal(await page.locator('portfolio-carousel .visual-slide').count(),5,'photo carousel incomplete');
           assert.equal(await page.locator('.prose .inline-photo').count(),3,'contextual photos missing');
         }
         assert.equal(await page.locator('.evidence-gallery').count(),0,'duplicate end gallery');
+        for(const name of ['st-70401-aa-bevel-box-housing-left.pdf','st-70406-aa-secondary-shaft.pdf']){
+          const path='/documents/'+name;
+          assert.equal(await page.locator('main a[href="'+path+'"]').count(),1,'drawing link missing');
+          const pdf=await page.request.get(base+path);
+          assert(pdf.ok() && (pdf.headers()['content-type']||'').includes('pdf'),'drawing PDF unavailable: '+name);
+          const bytes=await pdf.body();
+          assert(bytes.subarray(0,5).toString()==='%PDF-' && bytes.subarray(-2048).includes(Buffer.from('%%EOF')),'invalid drawing PDF');
+          await pdf.dispose();
+        }
         for (const name of ['ackermann-optimization.jpg','arb-instron.jpg','understeer-curves.jpg','load-transfer-sensitivity.jpg','endurance-gg.jpg']) {
           const path='/figures/fsae/binder/'+name;
           assert.equal(await page.locator('.prose a[href="'+path+'"] img[src="'+path+'"]').count(),1,'missing full-size image link: '+name);
@@ -96,6 +109,15 @@ try {
   assert.equal(await reduced.locator('html').evaluate(el=>getComputedStyle(el).scrollBehavior),'auto');
   await reduced.goto(base+'/projects/vehicle-dynamics/');
   assert.equal(await reduced.locator('portfolio-carousel [data-pause]').innerText(),'Play');
+  await reduced.goto(base+'/projects/fsae/');
+  const fsaeCarousel=reduced.locator('portfolio-carousel');
+  assert.equal(await fsaeCarousel.locator('[data-count]').innerText(),'1 / 5');
+  await fsaeCarousel.locator('[data-next]').click();
+  assert.equal(await fsaeCarousel.locator('[data-count]').innerText(),'2 / 5');
+  await fsaeCarousel.locator('[data-prev]').click();
+  assert.equal(await fsaeCarousel.locator('[data-count]').innerText(),'1 / 5');
+  await fsaeCarousel.locator('[data-prev]').click();
+  assert.equal(await fsaeCarousel.locator('img.actual-render').isVisible(),true,'CAD slide not visible');
   await reduced.close();
   console.log('Desktop and mobile route, layout, image and math checks passed');
 } finally {

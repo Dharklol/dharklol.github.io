@@ -28,7 +28,7 @@ class PortfolioCarousel extends HTMLElement{
   let i=0,manual=motion.matches,hover=false,focus=false;
   const stop=()=>{if(this.timer!==undefined)window.clearInterval(this.timer);this.timer=undefined;};
   const show=(next:number)=>{i=(next+slides.length)%slides.length;slides.forEach((s,j)=>s.hidden=j!==i);count.textContent=(i+1)+' / '+slides.length;};
-  const sync=()=>{stop();pause.textContent=manual?'Play':'Pause';pause.setAttribute('aria-label',manual?'Play slideshow':'Pause slideshow');if(!manual&&!hover&&!focus&&!document.hidden&&!motion.matches)this.timer=window.setInterval(()=>show(i+1),Number(this.dataset.interval)||7000);};
+  const sync=()=>{stop();pause.textContent=manual?'Play':'Pause';pause.setAttribute('aria-label',manual?'Play slideshow':'Pause slideshow');if(!manual&&!hover&&!focus&&!document.hidden)this.timer=window.setInterval(()=>show(i+1),Number(this.dataset.interval)||7000);};
   this.querySelector('[data-prev]')?.addEventListener('click',()=>{show(i-1);sync();},options);
   this.querySelector('[data-next]')?.addEventListener('click',()=>{show(i+1);sync();},options);
   pause.addEventListener('click',()=>{manual=!manual;sync();},options);
