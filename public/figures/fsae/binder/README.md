@@ -1,2 +1,3 @@
 # Selected design-binder images
-Upload the six JPGs from the portfolio visual pack here; the CAD hero and evidence gallery activate automatically when present. The full binder and confidentiality-marked drawings are deliberately not copied into the public site.
+
+Six supplied JPEGs, including the suspension CAD render and five selected binder figures. The full binder and confidentiality-marked drawings are not published. Browser CI requires all six images and full-size gallery links to load.

@@ -49,7 +49,15 @@ try {
         assert.equal(await page.locator('.document-reader .prose section').count(),9);
         assert(await page.locator('.article-contents a').evaluateAll(links=>links.every(a=>document.getElementById(decodeURIComponent(a.hash.slice(1))))),'broken document section link');
       }
+      if(route==='/'||route==='/projects/fsae/') {
+        assert.equal(await page.locator('img.actual-render[src="/figures/fsae/binder/suspension-render.jpg"]').count(),1,'CAD render missing');
+      }
       if(route==='/projects/fsae/') {
+        assert.equal(await page.locator('.evidence-gallery figure img').count(),5,'binder gallery incomplete');
+        for (const name of ['ackermann-optimization.jpg','arb-instron.jpg','understeer-curves.jpg','load-transfer-sensitivity.jpg','endurance-gg.jpg']) {
+          const path='/figures/fsae/binder/'+name;
+          assert.equal(await page.locator('.evidence-gallery a[href="'+path+'"] img[src="'+path+'"]').count(),1,'missing full-size image link: '+name);
+        }
         assert.equal(await page.locator('main a[href="/documents/steering-fdr/"]').count(),1);
         assert.equal(await page.locator('main a[href="/documents/wufr-26-steering-fdr/"]').count(),1);
         assert(await page.locator('.katex-display').count()>=4);
@@ -63,7 +71,7 @@ try {
         assert.equal(await page.locator('.katex-error').count(),0);
         assert(await page.locator('.article-contents a').evaluateAll(links=>links.every(a=>document.getElementById(decodeURIComponent(a.hash.slice(1))))),'broken contents link');
       }
-      if(route==='/'||route==='/projects/vehicle-dynamics/'||route==='/contact/') await page.screenshot({path:'screenshots/'+(route==='/'?'home':route==='/contact/'?'contact':'vehicle-dynamics')+'-'+width+'.png',fullPage:true,animations:'disabled'});
+      if(route==='/'||route==='/projects/fsae/'||route==='/projects/vehicle-dynamics/'||route==='/contact/') await page.screenshot({path:'screenshots/'+(route==='/'?'home':route==='/contact/'?'contact':route==='/projects/fsae/'?'fsae':'vehicle-dynamics')+'-'+width+'.png',fullPage:true,animations:'disabled'});
     }
     await page.close();
   }
