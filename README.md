@@ -1,4 +1,4 @@
-# Jesse Steel — Portfolio
+# Jesse Koeppel — Portfolio
 
 An Astro static website with Markdown project case studies.
 

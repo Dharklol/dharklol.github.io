@@ -4,7 +4,7 @@ import '../styles/global.css';
 import { contact } from '../data/contact';
 interface Props { title?: string; description?: string; }
 const { title, description = 'Selected engineering, computational modeling and quantitative research projects.' } = Astro.props;
-const pageTitle = title ? title + ' — Jesse Steel' : 'Jesse Steel — Engineering & Research';
+const pageTitle = title ? title + ' — Jesse Koeppel' : 'Jesse Koeppel — Engineering & Research';
 const path = Astro.url.pathname;
 const nav = [{href:'/#work',label:'Work'},{href:'/about/',label:'About'},{href:'/contact/',label:'Contact'}];
 ---
@@ -23,7 +23,7 @@ const nav = [{href:'/#work',label:'Work'},{href:'/about/',label:'About'},{href:'
 <a class="skip" href="#main">Skip to content</a>
 <div class="shell">
 <header class="site-header">
-<a class="wordmark" href="/">JESSE STEEL<span>.</span></a>
+<a class="wordmark" href="/">JESSE KOEPPEL<span>.</span></a>
 <nav aria-label="Primary">
 {nav.map(item => <a href={item.href} aria-current={path === item.href ? 'page' : undefined}>{item.label}</a>)}
 <a href={contact.github}>GitHub <span aria-hidden="true">↗</span></a>
@@ -31,7 +31,7 @@ const nav = [{href:'/#work',label:'Work'},{href:'/about/',label:'About'},{href:'
 </nav>
 </header>
 <main id="main"><slot /></main>
-<footer class="site-footer"><span>© {new Date().getFullYear()} Jesse Steel</span><div class="footer-links"><a href="/contact/">Contact</a><a href={contact.github}>GitHub <span aria-hidden="true">↗</span></a><a href={contact.linkedin}>LinkedIn <span aria-hidden="true">↗</span></a></div></footer>
+<footer class="site-footer"><span>© {new Date().getFullYear()} Jesse Koeppel</span><div class="footer-links"><a href="/contact/">Contact</a><a href={contact.github}>GitHub <span aria-hidden="true">↗</span></a><a href={contact.linkedin}>LinkedIn <span aria-hidden="true">↗</span></a></div></footer>
 </div>
 </body>
 </html>
